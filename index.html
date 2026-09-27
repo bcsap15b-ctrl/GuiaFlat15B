@@ -22,10 +22,10 @@
     }
   </style>
 </head>
-<body class="flex justify-center items-center min-h-screen p-0 sm:p-4">
+<body class="flex justify-center items-center min-h-[100dvh] h-[100dvh] p-0 sm:p-4 overflow-hidden">
 
   <!-- Contentor da App Mobile -->
-  <div class="w-full max-w-md bg-white h-screen sm:h-[844px] sm:rounded-3xl overflow-hidden flex flex-col justify-between shadow-2xl relative border border-gray-100">
+  <div class="w-full max-w-md bg-white h-[100dvh] max-h-[100dvh] sm:h-[844px] sm:max-h-[844px] sm:rounded-3xl overflow-hidden flex flex-col justify-between shadow-2xl relative border border-gray-100 min-h-0">
 
     <!-- HEADER PRINCIPAL (Visível no Menu) -->
     <div id="main-header" class="relative text-center text-white bg-[#002b49] pt-6 pb-4 px-4 rounded-b-3xl shrink-0">
@@ -39,7 +39,7 @@
     </div>
 
     <!-- TELA PRINCIPAL (Grelha do Menu) -->
-    <main id="home-view" class="p-4 flex-1 overflow-y-auto hide-scrollbar">
+    <main id="home-view" class="p-4 flex-1 min-h-0 overflow-y-auto hide-scrollbar">
       <div class="grid grid-cols-3 gap-2.5">
 
         <button onclick="openScreen('bem-vindo')" class="bg-[#e6f4f8] hover:bg-cyan-100 text-[#002b49] p-2.5 rounded-2xl flex flex-col items-center justify-center transition shadow-sm border border-cyan-100/50">
@@ -131,7 +131,7 @@
       </div>
 
       <!-- Área de Conteúdo Dinâmico -->
-      <div id="detail-content" class="p-4 flex-1 overflow-y-auto hide-scrollbar bg-gray-50">
+      <div id="detail-content" class="p-4 flex-1 min-h-0 overflow-y-auto hide-scrollbar bg-gray-50">
       </div>
     </div>
 
