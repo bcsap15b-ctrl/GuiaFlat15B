@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flat 15B - Beach Class Solare</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      background-color: #f0f4f8;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="flex justify-center items-center min-h-screen p-0 sm:p-4">
+
+  <!-- Contentor da App Mobile -->
+  <div class="w-full max-w-md bg-white min-h-screen sm:min-h-[844px] sm:h-[844px] sm:rounded-3xl overflow-hidden flex flex-col justify-between shadow-2xl relative border border-gray-100">
+
+    <!-- HEADER PRINCIPAL (Visível no Menu) -->
+    <div id="main-header" class="relative text-center text-white bg-[#002b49] pt-8 pb-6 px-4 rounded-b-3xl shrink-0">
+      <div class="border-2 border-white/80 rounded-2xl p-3 inline-block mb-2 bg-white/10 backdrop-blur-sm">
+        <h1 class="text-3xl font-extrabold tracking-widest leading-none">FLAT <span class="bg-white text-[#002b49] px-2 py-0.5 rounded-md">15B</span></h1>
+        <p class="text-[9px] tracking-widest mt-1 uppercase font-semibold">Beach Class Solare</p>
+        <p class="text-[7px] tracking-wider opacity-80">MURO ALTO • PORTO DE GALINHAS</p>
+      </div>
+      <h2 class="text-lg font-serif italic text-cyan-200 mt-1">Sejam bem-vindos!</h2>
+      <p class="text-[11px] text-blue-100 font-light px-2 mt-1">Preparamos este guia para que sua estadia seja ainda mais especial e tranquila.</p>
+    </div>
+
+    <!-- TELA PRINCIPAL (Grelha do Menu) -->
+    <main id="home-view" class="p-4 flex-1 overflow-y-auto hide-scrollbar">
+      <div class="grid grid-cols-3 gap-2.5">
+
+        <button onclick="openScreen('bem-vindo')" class="bg-[#e6f4f8] hover:bg-cyan-100 text-[#002b49] p-2.5 rounded-2xl flex flex-col items-center justify-center transition shadow-sm border border-cyan-100/50">
+          <i class="fa-solid fa-house text-lg text-[#0088cc] mb-1"></i>
+          <span class="text-[11px] font-semibold">Bem-vindos</span>
+        </button>
+
+        <button onclick="openScreen('checkin')" class="bg-[#e6f4f8] hover:bg-cyan-100 text-[#002b49] p-2.5 rounded-2xl flex flex-col items-center justify-center transition shadow-sm border border-cyan-100/50">
+          <i class="fa-solid fa-key text-lg text-[#0088cc] mb-1"></i>
+          <span class="text-[11px] font-semibold">Check-in</span>
+        </button>
+
+        <button onclick="openScreen('localizacao')" class="bg-[#e6f4f8] hover:bg-cyan-100 text-[#002b49] p-2.5 rounded-2xl flex flex-col items-center justify-center transition shadow-sm border border-cyan-100/50">
+          <i class="fa-solid fa-location-dot text-lg text-[#0088cc] mb-1"></i>
+          <span class="text-[11px] font-semibold">Localização</span>
+        </button>
+
+        <button onclick="openScreen('wifi')" class="bg-[#e6f4f8] hover:bg-cyan-100 text-[#002b49] p-2.5 rounded-2xl flex flex-col items-center justify-center transition shadow-sm border border-cyan-100/50">
+          <i class="fa-solid fa-wifi text-lg text-[#0088cc] mb-1"></i>
+          <span class="text-[11px] font-semibold">Wi-Fi</span>
+        </button>
+
+        <button onclick="openScreen('regras')" class="bg-[#e6f4f8] hover:bg-cyan-100 text-[#002b49] p-2.5 rounded-2xl flex flex-col items-center justify-center transition shadow-sm border border-cyan-100/50">
+          <i class="fa-solid fa-clipboard-list text-lg text-[#0088cc] mb-1"></i>
+          <span class="text-[11px] font-semibold">Regras</span>
+        </button>
+
+        <button onclick="openScreen('estrutura')" class="bg-[#e6f4f8] hover:bg-cyan-100 text-[#002b49] p-2.5 rounded-2xl flex flex-col items-center justify-center transition shadow-sm border border-cyan-100/50">
+          <i class="fa-solid fa-building text-lg text-[#0088cc] mb-1"></i>
+          <span class="text-[11px] font-semibold">Estrutura</span>
+        </button>
+
+        <button onclick="openScreen('flat')" class="bg-[#e6f4f8] hover:bg-cyan-100 text-[#002b49] p-2.5 rounded-2xl flex flex-col items-center justify-center transition shadow-sm border border-cyan-100/50">
+          <i class="fa-solid fa-bed text-lg text-[#0088cc] mb-1"></i>
+          <span class="text-[11px] font-semibold">O Flat 15B</span>
+        </button>
+
+        <button onclick="openScreen('onze')" class="bg-[#e6f4f8] hover:bg-cyan-100 text-[#002b49] p-2.5 rounded-2xl flex flex-col items-center justify-center transition shadow-sm border border-cyan-100/50">
+          <i class="fa-solid fa-utensils text-lg text-[#0088cc] mb-1"></i>
+          <span class="text-[11px] font-semibold">Restaurante</span>
+        </button>
+
+        <button onclick="openScreen('compras')" class="bg-[#e6f4f8] hover:bg-cyan-100 text-[#002b49] p-2.5 rounded-2xl flex flex-col items-center justify-center transition shadow-sm border border-cyan-100/50">
+          <i class="fa-solid fa-bag-shopping text-lg text-[#0088cc] mb-1"></i>
+          <span class="text-[11px] font-semibold">Compras</span>
+        </button>
+
+        <button onclick="openScreen('passeios')" class="bg-[#e6f4f8] hover:bg-cyan-100 text-[#002b49] p-2.5 rounded-2xl flex flex-col items-center justify-center transition shadow-sm border border-cyan-100/50">
+          <i class="fa-solid fa-umbrella-beach text-lg text-[#0088cc] mb-1"></i>
+          <span class="text-[11px] font-semibold">Passeios</span>
+        </button>
+
+        <button onclick="openScreen('transporte')" class="bg-[#e6f4f8] hover:bg-cyan-100 text-[#002b49] p-2.5 rounded-2xl flex flex-col items-center justify-center transition shadow-sm border border-cyan-100/50">
+          <i class="fa-solid fa-car text-lg text-[#0088cc] mb-1"></i>
+          <span class="text-[11px] font-semibold">Transporte</span>
+        </button>
+
+        <button onclick="openScreen('info')" class="bg-[#e6f4f8] hover:bg-cyan-100 text-[#002b49] p-2.5 rounded-2xl flex flex-col items-center justify-center transition shadow-sm border border-cyan-100/50">
+          <i class="fa-solid fa-user text-lg text-[#0088cc] mb-1"></i>
+          <span class="text-[11px] font-semibold">Perfil</span>
+        </button>
+
+      </div>
+
+      <!-- Banner Fale com o Anfitrião -->
+      <div onclick="openScreen('anfitriao')" class="mt-3 bg-[#e6f4f8] border border-cyan-200 p-3 rounded-2xl flex items-center justify-between cursor-pointer hover:bg-cyan-100 transition shadow-sm">
+        <div class="flex items-center gap-3">
+          <div class="bg-[#002b49] text-white p-2 rounded-xl">
+            <i class="fa-solid fa-comments text-base"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-[#002b49]">Fale com o anfitrião</h4>
+            <p class="text-[10px] text-gray-500">Estamos prontos para te ajudar!</p>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+      </div>
+    </main>
+
+    <!-- CONTAINER DE VISUALIZAÇÃO DE TELAS INTERNAS -->
+    <div id="detail-screen" class="hidden absolute inset-0 bg-white z-20 flex flex-col">
+      <!-- Cabeçalho Interno -->
+      <div class="bg-[#002b49] text-white p-4 flex items-center justify-between shrink-0 shadow-md">
+        <button onclick="closeScreen()" class="text-white flex items-center gap-2 font-medium text-xs">
+          <i class="fa-solid fa-arrow-left text-sm"></i>
+        </button>
+        <h3 id="detail-title" class="text-sm font-bold tracking-wide text-center flex-1">Título</h3>
+        <div class="w-4"></div>
+      </div>
+
+      <!-- Área de Conteúdo Dinâmico -->
+      <div id="detail-content" class="p-4 flex-1 overflow-y-auto hide-scrollbar bg-gray-50">
+      </div>
+    </div>
+
+    <!-- RODAPÉ DE NAVEGAÇÃO -->
+    <footer class="bg-[#002b49] text-white py-2 px-6 flex justify-between items-center text-[10px] border-t border-blue-900 shrink-0">
+      <button onclick="closeScreen()" class="flex flex-col items-center gap-0.5 text-cyan-300">
+        <i class="fa-solid fa-house text-sm"></i>
+        <span>Início</span>
+      </button>
+      <button class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-white">
+        <i class="fa-solid fa-heart text-sm"></i>
+        <span>Favoritos</span>
+      </button>
+      <button onclick="openScreen('localizacao')" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-white">
+        <i class="fa-solid fa-map-location-dot text-sm"></i>
+        <span>Mapa</span>
+      </button>
+      <button class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-white">
+        <i class="fa-solid fa-bars text-sm"></i>
+        <span>Mais</span>
+      </button>
+    </footer>
+
+  </div>
+
+  <!-- SCRIPT COM TODO O CONTEÚDO DAS TELAS -->
+  <script>
+    const screensData = {
+      // TELA 2: BEM-VINDOS
+      'bem-vindo': {
+        title: 'Bem-vindos',
+        content: `
+          <div class="space-y-4 text-center">
+            <div class="bg-blue-100 h-40 rounded-2xl flex items-center justify-center text-[#002b49] overflow-hidden relative">
+              <span class="font-serif italic text-2xl z-10 font-bold">Sejam muito bem-vindos!</span>
+              <div class="absolute inset-0 bg-blue-900/10"></div>
+            </div>
+            <p class="text-xs text-gray-600 leading-relaxed px-2">
+              É um prazer receber vocês no nosso flat! Estamos felizes em fazer parte da sua experiência em Muro Alto / Porto de Galinhas.
+            </p>
+            <div class="bg-cyan-50 p-4 rounded-2xl border border-cyan-100 flex items-center gap-3 text-left">
+              <i class="fa-solid fa-sun text-amber-500 text-2xl"></i>
+              <p class="text-xs text-gray-700">O Flat 15B é o seu refúgio no paraíso, com todo o conforto e praticidade que você merece.</p>
+            </div>
+            <p class="font-serif italic text-lg text-[#002b49] font-bold mt-4">Aproveite! 🌴</p>
+          </div>
+        `
+      },
+
+      // TELA 3: CHECK-IN
+      'checkin': {
+        title: 'Check-in',
+        content: `
+          <div class="space-y-4">
+            <!-- HEADER DA PÁGINA CHECK-IN -->
+            <div class="bg-[#002b49] text-white p-4 rounded-2xl flex items-center gap-3 shadow-sm">
+              <i class="fa-solid fa-key text-2xl text-cyan-300"></i>
+              <div>
+                <h4 class="font-bold text-sm">Check-in</h4>
+                <p class="text-[10px] text-gray-300">O check-in será realizado na recepção do Beach Class Solare.</p>
+              </div>
+            </div>
+
+            <!-- SEÇÃO "ANTES DE CHEGAR" DA IMAGEM ENVIADA -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 space-y-4 shadow-sm">
+              <div>
+                <h3 class="text-sm font-bold text-[#002b49] mb-1">Antes de chegar</h3>
+                <p class="text-xs text-gray-600 leading-relaxed">
+                  Para agilizar seu acesso ao condomínio, faça o pré-check-in com os dados dos hóspedes.
+                </p>
+              </div>
+
+              <!-- CARD DOCUMENTO COM FOTO -->
+              <div class="bg-cyan-50/60 p-3.5 rounded-xl border border-cyan-100 flex items-start gap-3">
+                <i class="fa-solid fa-id-card text-cyan-700 text-lg mt-0.5"></i>
+                <div>
+                  <h4 class="font-bold text-xs text-[#002b49]">Documento com foto</h4>
+                  <p class="text-[11px] text-gray-600 mt-0.5 leading-snug">
+                    É necessário apresentar documento oficial com foto no procedimento de check-in.
+                  </p>
+                </div>
+              </div>
+
+              <!-- PASSO A PASSO NÚMEROS -->
+              <div class="space-y-3 pt-1">
+                <div class="flex items-start gap-3">
+                  <span class="w-6 h-6 rounded-full bg-[#002b49] text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                  <div>
+                    <h5 class="text-xs font-bold text-gray-800">Preencha o pré-check-in</h5>
+                    <p class="text-[11px] text-gray-500">Use o link enviado pelo anfitrião.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                  <span class="w-6 h-6 rounded-full bg-[#002b49] text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                  <div>
+                    <h5 class="text-xs font-bold text-gray-800">Tenha os documentos em mãos</h5>
+                    <p class="text-[11px] text-gray-500">Isso ajuda a agilizar o acesso ao condomínio.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                  <span class="w-6 h-6 rounded-full bg-[#002b49] text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                  <div>
+                    <h5 class="text-xs font-bold text-gray-800">Confira as instruções de acesso</h5>
+                    <p class="text-[11px] text-gray-500">As orientações específicas são enviadas antes da chegada.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- NOTA INFORMATIVA FINAL -->
+              <p class="text-[10px] text-gray-500 pt-2 border-t border-gray-100 leading-tight">
+                As informações e códigos de acesso são pessoais. Não compartilhe com terceiros.
+              </p>
+            </div>
+          </div>
+        `
+      },
+
+      // TELA 4 & MAPA: LOCALIZAÇÃO
+      'localizacao': {
+        title: 'Localização',
+        content: `
+          <div class="space-y-3">
+            <div class="bg-white p-3 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-3">
+              <i class="fa-solid fa-location-dot text-2xl text-[#002b49]"></i>
+              <div>
+                <h4 class="font-bold text-xs text-[#002b49]">Beach Class Solare</h4>
+                <p class="text-[10px] text-gray-500">Flat 15B • térreo</p>
+              </div>
+            </div>
+
+            <!-- BOTÕES DE MAPA CLICÁVEIS -->
+            <div class="space-y-2">
+              <a href="https://goo.gl/maps/z9NJ1pRCPoeLB3E68" target="_blank" class="w-full bg-cyan-50 hover:bg-cyan-100 transition text-[#002b49] font-semibold p-2.5 rounded-xl text-xs flex justify-between items-center border border-cyan-100 block">
+                <span><i class="fa-solid fa-map-location text-blue-600 mr-2"></i> Abrir no Google Maps</span>
+                <i class="fa-solid fa-chevron-right text-gray-400"></i>
+              </a>
+              <a href="https://waze.com/ul?q=Beach%20Class%20Solare&navigate=yes" target="_blank" class="w-full bg-cyan-50 hover:bg-cyan-100 transition text-[#002b49] font-semibold p-2.5 rounded-xl text-xs flex justify-between items-center border border-cyan-100 block">
+                <span><i class="fa-solid fa-waze text-cyan-600 mr-2"></i> Abrir no Waze</span>
+                <i class="fa-solid fa-chevron-right text-gray-400"></i>
+              </a>
+            </div>
+
+            <!-- LISTA DE LOCAIS -->
+            <div class="space-y-2 pt-2">
+
+              <div class="flex items-center gap-3 bg-white p-2.5 rounded-xl border border-gray-100 text-xs">
+                <i class="fa-solid fa-umbrella-beach text-blue-500 text-base"></i>
+                <div>
+                  <p class="font-bold text-gray-800">Praia de Muro Alto</p>
+                  <p class="text-[10px] text-gray-500">300 m • menos de 5 min</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3 bg-white p-2.5 rounded-xl border border-gray-100 text-xs">
+                <i class="fa-solid fa-cart-shopping text-emerald-500 text-base"></i>
+                <div>
+                  <p class="font-bold text-gray-800">Empório Muro Alto</p>
+                  <p class="text-[10px] text-gray-500">Mercado, café da manhã, pizzaria, fast food, farmácia e outras opções, ao lado do condomínio.</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3 bg-white p-2.5 rounded-xl border border-gray-100 text-xs">
+                <i class="fa-solid fa-utensils text-amber-500 text-base"></i>
+                <div>
+                  <p class="font-bold text-gray-800">Beijupirá</p>
+                  <p class="text-[10px] text-gray-500">Restaurante à beira-mar, ao lado do condomínio.</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3 bg-white p-2.5 rounded-xl border border-gray-100 text-xs">
+                <i class="fa-solid fa-city text-purple-500 text-base"></i>
+                <div>
+                  <p class="font-bold text-gray-800">Centro de Porto de Galinhas</p>
+                  <p class="text-[10px] text-gray-500">8 km • cerca de 15 min</p>
+                </div>
+              </div>
+
+              <!-- ITEM: INDO PARA A PRAIA -->
+              <div class="bg-white p-3 rounded-xl border border-gray-100 text-xs space-y-1 shadow-sm">
+                <div class="flex items-center gap-2">
+                  <i class="fa-solid fa-person-walking-luggage text-cyan-600 text-base"></i>
+                  <p class="font-bold text-gray-800">Indo para a praia</p>
+                </div>
+                <p class="text-[11px] text-gray-600 leading-snug">
+                  O acesso é feito por uma alameda fechada e tranquila, em uma caminhada de menos de 5 minutos.
+                </p>
+                <div class="text-[9px] text-gray-400 leading-tight pt-1 border-t border-gray-50 space-y-0.5">
+                  <p>• O Flat 15B fica em frente ao início do trecho de pedras/muros que dá origem ao nome Muro Alto.</p>
+                  <p>• Na praia tem uma estrutura com cadeiras e guarda-sol, para uso do hóspede.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        `
+      },
+
+      // TELA 5: WI-FI
+      'wifi': {
+        title: 'Wi-Fi',
+        content: `
+          <div class="space-y-4">
+            <div class="text-center my-2">
+              <div class="w-16 h-16 bg-blue-100 text-[#002b49] rounded-full flex items-center justify-center mx-auto mb-2">
+                <i class="fa-solid fa-wifi text-2xl"></i>
+              </div>
+              <h4 class="text-base font-bold text-[#002b49]">Wi-Fi do Flat</h4>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 space-y-3 shadow-sm">
+              <div>
+                <label class="text-[10px] text-gray-400 font-bold block mb-1 uppercase">Rede:</label>
+                <input type="text" readonly value="Nome da rede" class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-xs font-semibold text-gray-700">
+              </div>
+              <div>
+                <label class="text-[10px] text-gray-400 font-bold block mb-1 uppercase">Senha:</label>
+                <div class="relative">
+                  <input type="text" readonly value="Senha da rede" class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-xs font-semibold text-gray-700">
+                  <i class="fa-solid fa-eye absolute right-3 top-2.5 text-gray-400 text-xs"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-cyan-50 p-3 rounded-xl border border-cyan-100 flex items-start gap-2 text-xs text-cyan-900">
+              <i class="fa-solid fa-circle-info text-cyan-600 mt-0.5"></i>
+              <p>Conecte-se e aproveite! Caso tenha qualquer dificuldade, nos avise.</p>
+            </div>
+          </div>
+        `
+      },
+
+      // TELA 6: REGRAS
+      'regras': {
+        title: 'Regras',
+        content: `
+          <div class="space-y-2.5">
+
+            <!-- CHECK-IN E CHECK-OUT -->
+            <div class="flex items-start gap-3 bg-white p-3 rounded-xl border border-gray-100 text-xs shadow-sm">
+              <i class="fa-solid fa-clock text-blue-600 text-base mt-0.5"></i>
+              <div>
+                <p class="font-bold text-gray-800">Horários de Check-in e Check-out</p>
+                <p class="text-gray-600 text-[11px]">O check-in deve ser feito após às 14h e o check-out até às 11h.</p>
+              </div>
+            </div>
+
+            <!-- REGRA 1 DA IMAGEM -->
+            <div class="flex items-start gap-3 bg-white p-3 rounded-xl border border-gray-100 text-xs shadow-sm">
+              <i class="fa-solid fa-id-card text-cyan-600 text-base mt-0.5"></i>
+              <div>
+                <p class="font-bold text-gray-800">Documento no check-in</p>
+                <p class="text-gray-600 text-[11px]">É necessário apresentar documento com foto.</p>
+              </div>
+            </div>
+
+            <!-- REGRA 2 DA IMAGEM -->
+            <div class="flex items-start gap-3 bg-white p-3 rounded-xl border border-gray-100 text-xs shadow-sm">
+              <i class="fa-solid fa-ban-smoking text-red-500 text-base mt-0.5"></i>
+              <div>
+                <p class="font-bold text-gray-800">Não fumar no apartamento</p>
+                <p class="text-gray-600 text-[11px]">Respeite também as áreas de restrição do condomínio.</p>
+              </div>
+            </div>
+
+            <!-- REGRA 3 DA IMAGEM -->
+            <div class="flex items-start gap-3 bg-white p-3 rounded-xl border border-gray-100 text-xs shadow-sm">
+              <i class="fa-solid fa-glass-water text-cyan-500 text-base mt-0.5"></i>
+              <div>
+                <p class="font-bold text-gray-800">Vidro na área da piscina, não.</p>
+                <p class="text-gray-600 text-[11px]">Não é permitido utilizar recipientes ou copos de vidro na área da piscina.</p>
+              </div>
+            </div>
+
+            <!-- REGRA 4 DA IMAGEM -->
+            <div class="flex items-start gap-3 bg-white p-3 rounded-xl border border-gray-100 text-xs shadow-sm">
+              <i class="fa-solid fa-person-swimming text-amber-500 text-base mt-0.5"></i>
+              <div>
+                <p class="font-bold text-gray-800">Alimentos fora da água</p>
+                <p class="text-gray-600 text-[11px]">Não é permitido consumir alimentos dentro da água da piscina.</p>
+              </div>
+            </div>
+
+            <!-- REGRA 5 DA IMAGEM -->
+            <div class="flex items-start gap-3 bg-white p-3 rounded-xl border border-gray-100 text-xs shadow-sm">
+              <i class="fa-solid fa-volume-xmark text-indigo-500 text-base mt-0.5"></i>
+              <div>
+                <p class="font-bold text-gray-800">Respeite o silêncio</p>
+                <p class="text-gray-600 text-[11px]">Evite ruídos que incomodem outros hóspedes e moradores, especialmente nos horários de silêncio.</p>
+              </div>
+            </div>
+
+            <!-- REGRA 6 DA IMAGEM -->
+            <div class="flex items-start gap-3 bg-white p-3 rounded-xl border border-gray-100 text-xs shadow-sm">
+              <i class="fa-solid fa-users text-emerald-600 text-base mt-0.5"></i>
+              <div>
+                <p class="font-bold text-gray-800">Hóspedes cadastrados</p>
+                <p class="text-gray-600 text-[11px]">O acesso deve respeitar os hóspedes informados na reserva e o cadastro do condomínio.</p>
+              </div>
+            </div>
+
+            <!-- NOTA OFICIAL DO CONDOMÍNIO -->
+            <p class="text-[10px] text-gray-500 pt-2 text-center leading-tight">
+              As regras oficiais do condomínio prevalecem e podem ser atualizadas pela administração.
+            </p>
+
+          </div>
+        `
+      },
+
+      // TELA 7: ESTRUTURA
+      'estrutura': {
+        title: 'Estrutura',
+        content: `
+          <div class="space-y-3">
+            <div class="grid grid-cols-2 gap-2.5">
+              
+              <!-- 1. PISCINAS GIGANTES -->
+              <div class="bg-white p-3 rounded-2xl border border-gray-100 text-left flex flex-col justify-between shadow-sm">
+                <i class="fa-solid fa-person-swimming text-cyan-600 text-xl mb-1.5"></i>
+                <div>
+                  <p class="text-xs font-bold text-[#002b49]">Piscinas gigantes</p>
+                  <p class="text-[10px] text-gray-400 mt-0.5">Ampla área de lazer aquática</p>
+                </div>
+              </div>
+
+              <!-- 2. OFURÔS -->
+              <div class="bg-white p-3 rounded-2xl border border-gray-100 text-left flex flex-col justify-between shadow-sm">
+                <i class="fa-solid fa-hot-tub-person text-red-500 text-xl mb-1.5"></i>
+                <div>
+                  <p class="text-xs font-bold text-[#002b49]">Ofurôs</p>
+                  <p class="text-[10px] text-gray-400 mt-0.5">Espaços para relaxar</p>
+                </div>
+              </div>
+
+              <!-- 3. BRINQUEDOTECA -->
+              <div class="bg-white p-3 rounded-2xl border border-gray-100 text-left flex flex-col justify-between shadow-sm">
+                <i class="fa-solid fa-child-reaching text-amber-600 text-xl mb-1.5"></i>
+                <div>
+                  <p class="text-xs font-bold text-[#002b49]">Brinquedoteca</p>
+                  <p class="text-[10px] text-gray-400 mt-0.5">Espaço para as crianças</p>
+                </div>
+              </div>
+
+              <!-- 4. LOJA DE CONVENIÊNCIA -->
+              <div class="bg-white p-3 rounded-2xl border border-gray-100 text-left flex flex-col justify-between shadow-sm">
+                <i class="fa-solid fa-store text-emerald-600 text-xl mb-1.5"></i>
+                <div>
+                  <p class="text-xs font-bold text-[#002b49]">Loja de conveniência</p>
+                  <p class="text-[10px] text-gray-400 mt-0.5">Praticidade sem sair do condomínio</p>
+                </div>
+              </div>
+
+              <!-- 5. ESPAÇO PARA PETS -->
+              <div class="bg-white p-3 rounded-2xl border border-gray-100 text-left flex flex-col justify-between shadow-sm">
+                <i class="fa-solid fa-dog text-amber-800 text-xl mb-1.5"></i>
+                <div>
+                  <p class="text-xs font-bold text-[#002b49]">Espaço para pets</p>
+                  <p class="text-[10px] text-gray-400 mt-0.5">Área dedicada aos animais</p>
+                </div>
+              </div>
+
+              <!-- 6. CARREGADOR VEICULAR -->
+              <div class="bg-white p-3 rounded-2xl border border-gray-100 text-left flex flex-col justify-between shadow-sm">
+                <i class="fa-solid fa-plug text-gray-700 text-xl mb-1.5"></i>
+                <div>
+                  <p class="text-xs font-bold text-[#002b49]">Carregador veicular</p>
+                  <p class="text-[10px] text-gray-400 mt-0.5">Para veículos elétricos</p>
+                </div>
+              </div>
+
+              <!-- 7. ACADEMIA -->
+              <div class="bg-white p-3 rounded-2xl border border-gray-100 text-left flex flex-col justify-between shadow-sm">
+                <i class="fa-solid fa-dumbbell text-amber-600 text-xl mb-1.5"></i>
+                <div>
+                  <p class="text-xs font-bold text-[#002b49]">Academia</p>
+                  <p class="text-[10px] text-gray-400 mt-0.5">Para manter a rotina</p>
+                </div>
+              </div>
+
+              <!-- 8. QUADRA -->
+              <div class="bg-white p-3 rounded-2xl border border-gray-100 text-left flex flex-col justify-between shadow-sm">
+                <i class="fa-solid fa-volleyball text-gray-400 text-xl mb-1.5"></i>
+                <div>
+                  <p class="text-xs font-bold text-[#002b49]">Quadra</p>
+                  <p class="text-[10px] text-gray-400 mt-0.5">Quadra poliesportiva</p>
+                </div>
+              </div>
+
+              <!-- 9. JOGOS -->
+              <div class="bg-white p-3 rounded-2xl border border-gray-100 text-left flex flex-col justify-between shadow-sm">
+                <i class="fa-solid fa-table-tennis-paddle-ball text-red-500 text-xl mb-1.5"></i>
+                <div>
+                  <p class="text-xs font-bold text-[#002b49]">Jogos</p>
+                  <p class="text-[10px] text-gray-400 mt-0.5">Ping-pong, bilhar e pebolim</p>
+                </div>
+              </div>
+
+              <!-- 10. ONZE PRAIA (CARD PADRONIZADO E CLICÁVEL COM SETINHA DE LINK) -->
+              <div onclick="openScreen('onze')" class="bg-white p-3 rounded-2xl border border-gray-100 text-left flex flex-col justify-between cursor-pointer hover:border-cyan-200 transition shadow-sm relative">
+                <div>
+                  <div class="flex items-start justify-between">
+                    <i class="fa-solid fa-utensils text-amber-500 text-xl mb-1.5"></i>
+                    <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-xs font-bold text-[#002b49]">ONZE Praia</p>
+                  <p class="text-[10px] text-gray-400 mt-0.5">Restaurante do Solare</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        `
+      },
+
+      // TELA 8: O FLAT 15B
+      'flat': {
+        title: 'O Flat 15B',
+        content: `
+          <div class="space-y-3">
+            <p class="text-xs text-gray-700 leading-relaxed bg-white p-3 rounded-xl border border-gray-100">
+              Nosso flat no <strong>térreo</strong> e com <strong>Garden</strong>, está localizado na praia de Muro Alto, em Porto de Galinhas, no condomínio Beach Class Solare.<br><br>
+              Perfeito para quem busca conforto e praticidade perto da praia.
+            </p>
+
+            <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-xs text-emerald-900 flex items-center gap-2">
+              <i class="fa-solid fa-leaf text-emerald-600 text-lg"></i>
+              <div>
+                <p class="font-bold">Térreo e Garden</p>
+                <p class="text-[10px]">Mais espaço, privacidade e contato com a natureza.</p>
+              </div>
+            </div>
+
+            <div class="bg-white p-3 rounded-xl border border-gray-100 text-xs space-y-1.5">
+              <p class="font-bold text-[#002b49]">Acomoda até 4 pessoas, contando com:</p>
+              <p><i class="fa-solid fa-bed text-blue-500 mr-2"></i> 1 cama queen</p>
+              <p><i class="fa-solid fa-bed text-blue-500 mr-2"></i> 1 cama auxiliar</p>
+              <p><i class="fa-solid fa-couch text-blue-500 mr-2"></i> 1 sofá-cama</p>
+            </div>
+
+            <div class="bg-white p-3 rounded-xl border border-gray-100 text-xs">
+              <p class="font-bold text-[#002b49] mb-2">Totalmente equipado e com:</p>
+              <div class="grid grid-cols-2 gap-2 text-[11px] text-gray-700">
+                <p><i class="fa-solid fa-snowflake text-cyan-500 mr-1"></i> Ar condicionado</p>
+                <p><i class="fa-solid fa-bread-slice text-amber-500 mr-1"></i> Sanduicheira</p>
+                <p><i class="fa-solid fa-wind text-gray-500 mr-1"></i> Air-fryer</p>
+                <p><i class="fa-solid fa-blender text-[#0088cc] mr-1"></i> Mixer</p>
+                <p><i class="fa-solid fa-microchip text-indigo-500 mr-1"></i> Micro-ondas</p>
+                <p><i class="fa-solid fa-fire text-red-500 mr-1"></i> Fogão de indução</p>
+                <p><i class="fa-solid fa-box text-orange-500 mr-1"></i> Torradeira</p>
+                <p><i class="fa-solid fa-temperature-low text-blue-600 mr-1"></i> Geladeira</p>
+              </div>
+            </div>
+          </div>
+        `
+      },
+
+      // TELA 9: RESTAURANTE ONZE
+      'onze': {
+        title: 'ONZE Praia Restaurante',
+        content: `
+          <div class="space-y-3">
+            <p class="text-xs text-gray-700 bg-white p-3 rounded-xl border border-gray-100">
+              O <strong>ONZE</strong> é o restaurante que fica nas instalações do condomínio, com opções para todos os momentos.
+            </p>
+
+            <!-- OPÇÕES DO RESTAURANTE -->
+            <div class="space-y-2.5">
+              
+              <div class="bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm space-y-1">
+                <div class="flex items-center gap-2 text-xs font-bold text-[#002b49]">
+                  <i class="fa-solid fa-mug-hot text-amber-600 text-base"></i>
+                  <span>Café da manhã</span>
+                </div>
+                <p class="text-[11px] text-gray-600 pl-6 leading-relaxed">
+                  Frutas frescas, tapiocas, pães variados e outras opções.
+                </p>
+              </div>
+
+              <div class="bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm space-y-1">
+                <div class="flex items-center gap-2 text-xs font-bold text-[#002b49]">
+                  <i class="fa-solid fa-utensils text-[#0088cc] text-base"></i>
+                  <span>Pratos</span>
+                </div>
+                <p class="text-[11px] text-gray-600 pl-6 leading-relaxed">
+                  Peixes, massas e outras preparações com ingredientes selecionados.
+                </p>
+              </div>
+
+              <div class="bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm space-y-1">
+                <div class="flex items-center gap-2 text-xs font-bold text-[#002b49]">
+                  <i class="fa-solid fa-glass-water text-emerald-600 text-base"></i>
+                  <span>Piscina</span>
+                </div>
+                <p class="text-[11px] text-gray-600 pl-6 leading-relaxed">
+                  Petiscos, drinks e bebidas geladas.
+                </p>
+              </div>
+
+              <!-- CARD VOZ & VIOLÃO PADRONIZADO -->
+              <div class="bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm space-y-1">
+                <div class="flex items-center gap-2 text-xs font-bold text-[#002b49]">
+                  <i class="fa-solid fa-music text-purple-600 text-base"></i>
+                  <span>Voz & Violão</span>
+                </div>
+                <p class="text-[11px] text-gray-600 pl-6 leading-relaxed">
+                  Programação musical em noites selecionadas.
+                </p>
+              </div>
+
+            </div>
+
+            <!-- BOTÕES LADO A LADO: PÁGINA WEB E WHATSAPP -->
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <a href="https://onzepraiarestaurante.com" target="_blank" class="flex items-center justify-center gap-1.5 bg-[#002b49] text-white font-bold py-3 px-2 rounded-xl text-xs shadow-md text-center">
+                <i class="fa-solid fa-globe text-cyan-300"></i>
+                <span>Página Web</span>
+              </a>
+
+              <a href="https://wa.me/5581933005486" target="_blank" class="flex items-center justify-center gap-1.5 bg-emerald-600 text-white font-bold py-3 px-2 rounded-xl text-xs shadow-md text-center">
+                <i class="fa-brands fa-whatsapp text-white text-sm"></i>
+                <span>(81) 93300-5486</span>
+              </a>
+            </div>
+
+          </div>
+        `
+      },
+
+      // TELA 10: COMPRAS
+      'compras': {
+        title: 'Compras',
+        content: `
+          <div class="space-y-3">
+            
+            <!-- 1. EMPÓRIO MURO ALTO -->
+            <a href="https://linktr.ee/emporiope?utm_source=linktree_profile_share&ltsid=b6eba20a-c821-47b2-9710-a3cfdb8388f6" target="_blank" class="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm hover:border-cyan-200 transition">
+              <div class="flex items-start gap-3">
+                <i class="fa-solid fa-cart-shopping text-cyan-600 text-lg mt-0.5 shrink-0"></i>
+                <div>
+                  <h4 class="font-bold text-xs text-[#002b49]">Empório Muro Alto</h4>
+                  <p class="text-[11px] text-gray-600 mt-0.5 leading-snug">Mercado, café da manhã, pizzaria, fast food, farmácia e outras opções, ao lado do condomínio.</p>
+                </div>
+              </div>
+              <i class="fa-solid fa-chevron-right text-gray-400 text-xs ml-3 shrink-0"></i>
+            </a>
+
+            <!-- 2. RESTAURANTE BEIJUPIRA -->
+            <a href="https://www.beijupira.com.br/restaurante/beijupir%C3%A1-porto-de-galinhas" target="_blank" class="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm hover:border-cyan-200 transition">
+              <div class="flex items-start gap-3">
+                <i class="fa-solid fa-utensils text-amber-600 text-lg mt-0.5 shrink-0"></i>
+                <div>
+                  <h4 class="font-bold text-xs text-[#002b49]">Restaurante Beijupira</h4>
+                  <p class="text-[11px] text-gray-600 mt-0.5 leading-snug">Receitas maravilhosas que misturam o poderoso peixe com frutas tropicais e especiarias, é a criativa proposta da casa. Ao lado do condomínio.</p>
+                </div>
+              </div>
+              <i class="fa-solid fa-chevron-right text-gray-400 text-xs ml-3 shrink-0"></i>
+            </a>
+
+            <!-- 3. ONZE RESTAURANTE -->
+            <div onclick="openScreen('onze')" class="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm cursor-pointer hover:border-cyan-200 transition">
+              <div class="flex items-start gap-3">
+                <i class="fa-solid fa-utensils text-[#0088cc] text-lg mt-0.5 shrink-0"></i>
+                <div>
+                  <h4 class="font-bold text-xs text-[#002b49]">Onze Restaurante</h4>
+                  <p class="text-[11px] text-gray-600 mt-0.5 leading-snug">O restaurante que fica nas instalações do condomínio, com opções para todos os momentos.</p>
+                </div>
+              </div>
+              <i class="fa-solid fa-chevron-right text-gray-400 text-xs ml-3 shrink-0"></i>
+            </div>
+
+            <!-- 4. CONVENIÊNCIA - REDE REDMART -->
+            <a href="https://www.instagram.com/redmart.br?stkn=dzNidHRhcTF5cmln" target="_blank" class="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm hover:border-cyan-200 transition">
+              <div class="flex items-start gap-3">
+                <i class="fa-solid fa-store text-emerald-600 text-lg mt-0.5 shrink-0"></i>
+                <div>
+                  <h4 class="font-bold text-xs text-[#002b49]">Loja de conveniência - Rede Redmart</h4>
+                  <p class="text-[11px] text-gray-600 mt-0.5 leading-snug">Praticidade sem sair do condomínio.</p>
+                </div>
+              </div>
+              <i class="fa-solid fa-chevron-right text-gray-400 text-xs ml-3 shrink-0"></i>
+            </a>
+
+          </div>
+        `
+      },
+
+      // TELA 11: PASSEIOS
+      'passeios': {
+        title: 'Passeios',
+        content: `
+          <div class="space-y-4">
+            <div class="space-y-2">
+              <div class="bg-white p-3 rounded-xl border border-gray-100 text-xs shadow-sm">
+                <p class="font-bold text-gray-800">Muro Alto (piscininhas)</p>
+                <p class="text-[10px] text-gray-500">> 1 km de paredão</p>
+              </div>
+              <div class="bg-white p-3 rounded-xl border border-gray-100 text-xs shadow-sm">
+                <p class="font-bold text-gray-800">Porto de Galinhas</p>
+                <p class="text-[10px] text-gray-500">8 km • cerca de 15 min</p>
+              </div>
+            </div>
+
+            <!-- BUGGY DO JAPA -->
+            <div class="bg-white p-3.5 rounded-2xl border border-gray-100 text-xs shadow-sm space-y-2">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-car-side text-emerald-500 text-base"></i>
+                <p class="font-bold text-gray-800">Buggy do Japa</p>
+              </div>
+              <p class="text-[11px] text-gray-500 leading-snug">Passeio de Buggy, Jet, lancha, translado aeroporto.</p>
+              
+              <div class="flex items-center gap-4 pt-1 justify-start">
+                <a href="https://wa.me/558191546190" target="_blank" class="flex items-center gap-1 text-emerald-600 font-bold text-xs bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-100">
+                  <i class="fa-brands fa-whatsapp text-lg"></i>
+                  <span>WhatsApp</span>
+                </a>
+                <a href="https://instagram.com/buggydojapa" target="_blank" class="flex items-center gap-1 text-pink-600 font-bold text-xs bg-pink-50 px-2.5 py-1.5 rounded-lg border border-pink-100">
+                  <i class="fa-brands fa-instagram text-lg"></i>
+                  <span>Instagram</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        `
+      },
+
+      // TELA 11 (B): TRANSPORTE
+      'transporte': {
+        title: 'Transporte',
+        content: `
+          <div class="space-y-3">
+            
+            <!-- 1. CARRO -->
+            <div class="bg-white p-3 rounded-xl border border-gray-100 text-xs shadow-sm space-y-1">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-car text-blue-500 text-base"></i>
+                <p class="font-bold text-gray-800">Carro</p>
+              </div>
+              <p class="text-[11px] text-gray-500 leading-snug">Facilita conhecer praias e atrações da região.</p>
+            </div>
+
+            <!-- 2. APLICATIVO / TÁXI -->
+            <div class="bg-white p-3 rounded-xl border border-gray-100 text-xs shadow-sm space-y-1">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-taxi text-yellow-500 text-base"></i>
+                <p class="font-bold text-gray-800">Aplicativo / Táxi</p>
+              </div>
+              <p class="text-[11px] text-gray-500 leading-snug">Prático para Porto de Galinhas e passeios.</p>
+            </div>
+
+            <!-- 3. BUGGY DO JAPA -->
+            <div class="bg-white p-3.5 rounded-2xl border border-gray-100 text-xs shadow-sm space-y-2">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-car-side text-emerald-500 text-base"></i>
+                <p class="font-bold text-gray-800">Buggy do Japa</p>
+              </div>
+              <p class="text-[11px] text-gray-500 leading-snug">Passeio de Buggy, Jet, lancha, translado aeroporto.</p>
+              
+              <div class="flex items-center gap-4 pt-1 justify-start">
+                <a href="https://wa.me/558191546190" target="_blank" class="flex items-center gap-1 text-emerald-600 font-bold text-xs bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-100">
+                  <i class="fa-brands fa-whatsapp text-lg"></i>
+                  <span>WhatsApp</span>
+                </a>
+                <a href="https://instagram.com/buggydojapa" target="_blank" class="flex items-center gap-1 text-pink-600 font-bold text-xs bg-pink-50 px-2.5 py-1.5 rounded-lg border border-pink-100">
+                  <i class="fa-brands fa-instagram text-lg"></i>
+                  <span>Instagram</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        `
+      },
+
+      // TELA 12: PERFIL
+      'info': {
+        title: 'Perfil',
+        content: `
+          <div class="space-y-4">
+            
+            <!-- ÍCONES INSTAGRAM E AIRBNB LADO A LADO -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-center gap-8">
+              <a href="https://instagram.com/flat15bmuroalto" target="_blank" class="p-3 bg-pink-50 text-pink-600 rounded-2xl hover:bg-pink-100 transition shadow-sm border border-pink-100">
+                <i class="fa-brands fa-instagram text-3xl"></i>
+              </a>
+              <a href="https://airbnb.com/h/flat15bmuroalto" target="_blank" class="p-3 bg-rose-50 text-rose-500 rounded-2xl hover:bg-rose-100 transition shadow-sm border border-rose-100">
+                <i class="fa-solid fa-house-user text-3xl"></i>
+              </a>
+            </div>
+
+            <!-- BLOCO WHATSAPP EXATAMENTE IGUAL À TELA ANFITRIÃO -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+              <div class="flex items-center gap-3 mb-2">
+                <i class="fa-brands fa-whatsapp text-emerald-500 text-xl"></i>
+                <div>
+                  <p class="font-bold text-xs text-gray-800">WhatsApp</p>
+                  <p class="text-[10px] text-gray-500">Estamos à disposição para ajudar!</p>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-2 mt-2 pl-8">
+                <a href="https://wa.me/5511993891355" target="_blank" class="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 font-bold text-xs py-2 px-3 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition">
+                  <i class="fa-brands fa-whatsapp text-emerald-600"></i>
+                  (11) 99389-1355
+                </a>
+                <a href="https://wa.me/5511983055701" target="_blank" class="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 font-bold text-xs py-2 px-3 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition">
+                  <i class="fa-brands fa-whatsapp text-emerald-600"></i>
+                  (11) 98305-5701
+                </a>
+              </div>
+            </div>
+
+            <!-- OBSERVAÇÃO DELICADA PARA MARCAR NO INSTAGRAM -->
+            <div class="bg-gradient-to-r from-cyan-50 to-blue-50 p-4 rounded-2xl border border-cyan-100 text-center space-y-2 shadow-sm">
+              <p class="text-xs font-semibold text-[#002b49]">
+                Registrou momentos especiais por aqui? 📸
+              </p>
+              <p class="text-[11px] text-gray-600 leading-relaxed px-2">
+                Adoraremos acompanhar a sua estadia! <br>
+                Se publicar fotos ou vídeos, marque o nosso perfil que será uma alegria compartilhar seus momentos! ✨
+              </p>
+            </div>
+
+          </div>
+        `
+      },
+
+      // BANNER INFERIOR: FALE COM O ANFITRIÃO / INSTAGRAM
+      'anfitriao': {
+        title: 'Fale com o Anfitrião',
+        content: `
+          <div class="space-y-4">
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 space-y-3 shadow-sm">
+              
+              <!-- SEÇÃO AIRBNB COM LINK -->
+              <a href="https://airbnb.com/h/flat15bmuroalto" target="_blank" class="flex items-center gap-3 p-2 hover:bg-rose-50 rounded-xl transition">
+                <i class="fa-solid fa-house-user text-rose-500 text-xl"></i>
+                <div>
+                  <p class="font-bold text-xs text-gray-800 flex items-center gap-1">
+                    Aqui no Airbnb <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-rose-500"></i>
+                  </p>
+                  <p class="text-[10px] text-gray-500">Você pode nos chamar diretamente pelo chat do Airbnb.</p>
+                </div>
+              </a>
+
+              <hr class="border-gray-100">
+
+              <!-- SEÇÃO WHATSAPP COM TELEFONES CLICÁVEIS -->
+              <div class="p-2">
+                <div class="flex items-center gap-3 mb-2">
+                  <i class="fa-brands fa-whatsapp text-emerald-500 text-xl"></i>
+                  <div>
+                    <p class="font-bold text-xs text-gray-800">WhatsApp</p>
+                    <p class="text-[10px] text-gray-500">Estamos à disposição para ajudar!</p>
+                  </div>
+                </div>
+
+                <div class="flex flex-col gap-2 mt-2 pl-8">
+                  <a href="https://wa.me/5511993891355" target="_blank" class="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 font-bold text-xs py-2 px-3 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition">
+                    <i class="fa-brands fa-whatsapp text-emerald-600"></i>
+                    (11) 99389-1355
+                  </a>
+                  <a href="https://wa.me/5511983055701" target="_blank" class="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 font-bold text-xs py-2 px-3 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition">
+                    <i class="fa-brands fa-whatsapp text-emerald-600"></i>
+                    (11) 98305-5701
+                  </a>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="bg-gradient-to-r from-purple-600 to-pink-500 text-white p-4 rounded-2xl shadow-md text-center">
+              <i class="fa-brands fa-instagram text-3xl mb-1"></i>
+              <h4 class="font-bold text-xs">Nos acompanhe no Instagram</h4>
+              <p class="text-[11px] font-semibold text-yellow-200">@flat15bmuroalto</p>
+              <p class="text-[9px] opacity-80 mt-1 mb-3">
+                Registrou momentos especiais por aqui? 📸<br>
+                Adoraremos acompanhar a sua estadia!<br>
+                Se publicar fotos ou vídeos, marque o nosso perfil que será uma alegria compartilhar seus momentos! ✨
+              </p>
+              <a href="https://instagram.com/flat15bmuroalto" target="_blank" class="inline-block bg-white text-purple-700 text-xs font-bold px-4 py-2 rounded-xl shadow">
+                Ver perfil <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1"></i>
+              </a>
+            </div>
+          </div>
+        `
+      }
+    };
+
+    function openScreen(screenKey) {
+      const screen = document.getElementById('detail-screen');
+      const title = document.getElementById('detail-title');
+      const content = document.getElementById('detail-content');
+
+      const data = screensData[screenKey] || {
+        title: 'Flat 15B',
+        content: '<p class="text-center text-xs text-gray-500 mt-8">Conteúdo em atualização...</p>'
+      };
+
+      title.innerText = data.title;
+      content.innerHTML = data.content;
+      screen.classList.remove('hidden');
+    }
+
+    function closeScreen() {
+      document.getElementById('detail-screen').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
