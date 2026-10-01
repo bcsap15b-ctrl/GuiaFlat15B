@@ -207,15 +207,8 @@
 
     async function loadConfig() {
       try {
-        let response = await fetch(`/api/config/${encodeURIComponent(getHtmlFileName())}`, { cache: 'no-store' });
-        if (!response.ok) {
-          const configUrl = new URL(window.location.href);
-          configUrl.pathname = configUrl.pathname.replace(/\.html?$/i, '.sys');
-          configUrl.search = '';
-          configUrl.hash = '';
-          response = await fetch(configUrl, { cache: 'no-store' });
-        }
-        if (!response.ok) throw new Error('Arquivo .sys correspondente não encontrado');
+        const response = await fetch(`/api/config/${encodeURIComponent(getHtmlFileName())}`, { cache: 'no-store' });
+        if (!response.ok) throw new Error('Arquivo config.sys não encontrado');
 
         const text = await response.text();
         const lines = text.split(/\r?\n/);
@@ -266,31 +259,12 @@
         <form onsubmit="submitParameterLogin(event)" class="mx-auto max-w-sm space-y-4">
           <label for="parameter-password" class="block text-sm font-semibold text-gray-700">Senha</label>
           <input id="parameter-password" type="password" autocomplete="current-password" required class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-100">
+          <p class="text-xs text-gray-500">No primeiro acesso, use 123456.</p>
           <p id="parameter-login-error" role="alert" class="text-sm text-red-600">${escapeHtml(errorMessage)}</p>
-          <div class="grid grid-cols-2 gap-2">
-            <button type="submit" class="rounded-lg bg-[#002b49] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#03446b]">Entrar</button>
-            <button type="button" onclick="showPasswordChange(false)" class="rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm font-semibold text-[#002b49] hover:bg-gray-50">Alterar Senha</button>
-          </div>
+          <button type="submit" class="w-full rounded-lg bg-[#002b49] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#03446b]">Entrar</button>
         </form>
       `);
       document.getElementById('parameter-password').focus();
-    }
-
-    function showPasswordChange(firstSetup, errorMessage = '') {
-      showParameterScreen('Alterar Senha', `
-        <form onsubmit="submitPasswordChange(event)" class="mx-auto max-w-sm space-y-4">
-          ${firstSetup ? '<p class="rounded-lg border border-cyan-200 bg-cyan-50 p-3 text-sm text-cyan-900">No primeiro acesso, use 123456.</p>' : ''}
-          <label for="old-password" class="block text-sm font-semibold text-gray-700">Senha anterior</label>
-          <input id="old-password" type="password" autocomplete="current-password" required class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-100">
-          <label for="new-password" class="block text-sm font-semibold text-gray-700">Nova senha</label>
-          <input id="new-password" type="password" autocomplete="new-password" required class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-100">
-          <label for="confirm-password" class="block text-sm font-semibold text-gray-700">Confirme a nova senha</label>
-          <input id="confirm-password" type="password" autocomplete="new-password" required class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-100">
-          <p id="password-change-error" role="alert" class="text-sm text-red-600">${escapeHtml(errorMessage)}</p>
-          <button type="submit" class="w-full rounded-lg bg-[#002b49] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#03446b]">Salvar Nova Senha</button>
-        </form>
-      `);
-      document.getElementById('old-password').focus();
     }
 
     async function openParameterEditor() {
@@ -299,11 +273,11 @@
         const response = await fetch(`/api/session/${encodeURIComponent(pageName)}`, { cache: 'no-store' });
         if (!response.ok) throw new Error('Não foi possível verificar o login.');
         const session = await response.json();
-        if (!session.hasPassword) {
-          showPasswordChange(true);
+        if (!session.authenticated) {
+          showParameterLogin();
           return;
         }
-        showParameterLogin();
+        await showParameterEditor();
       } catch (error) {
         showParameterLogin(error.message);
       }
@@ -326,36 +300,6 @@
         await showParameterEditor();
       } catch (error) {
         showParameterLogin('Não foi possível conectar ao servidor local.');
-      }
-    }
-
-    async function submitPasswordChange(event) {
-      event.preventDefault();
-      const oldPassword = document.getElementById('old-password').value;
-      const newPassword = document.getElementById('new-password').value;
-      const confirmPassword = document.getElementById('confirm-password').value;
-      const status = document.getElementById('password-change-error');
-
-      if (newPassword !== confirmPassword) {
-        status.textContent = 'As novas senhas não são iguais.';
-        return;
-      }
-
-      try {
-        const response = await fetch('/api/password/change', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ htmlName: getHtmlFileName(), oldPassword, newPassword, confirmPassword })
-        });
-        const result = await response.json();
-        if (!response.ok) {
-          status.textContent = result.error || 'Não foi possível alterar a senha.';
-          return;
-        }
-        showParameterScreen('Alterar Senha', '<p class="rounded-lg border border-green-200 bg-green-50 p-4 text-center text-sm font-semibold text-green-800">Senha alterada com sucesso.</p>');
-        window.setTimeout(() => showParameterEditor(), 1000);
-      } catch (error) {
-        status.textContent = 'Não foi possível conectar ao servidor local.';
       }
     }
 

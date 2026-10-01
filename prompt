@@ -1,0 +1,36 @@
+- crie outra variável no config.sys
+CONDOMINIO=Beach Class Solare
+- altere todo lugar do código que tenha esse código para usar a variável CONDOMINIO em vez do valor fixo "Beach Class Solare".
+
+- crie TODAS as variáveis abaixo no config.sys
+CONDREDUZIDO=Solare
+LUGAR1=Muro Alto
+LUGAR2=Porto de Galinhas
+
+
+- altere todo lugar do código que tenha o conteúdo dessa variável, para usar a respectível variável criada.
+
+Alterar o conteúdo  "arquivo".sys atravé de tela.
+- O nome do arquivo .sys que será alterado, deve respeitar a regra criada para recuperar o nome do arquivo, que é o mesmo nome do arquivo .html, mas com a extensão .sys. Exemplo: index.html -> index.sys
+- Colocar essa funcionalidade em uma tela, que permita alterar o conteúdo do arquivo .sys, e salvar as alterações no mesmo arquivo .sys.
+- Incluir uma opção no menu "Mais", com o nome "Editar Parâmetros", para acessar essa tela de alteração do arquivo .sys.
+- Antes de abrir a nova tela, verificar se o usuário está logado. Caso não esteja, redirecionar para a tela de login.
+- essa nova tela de login deverá solicitar apenas a senha e essa senha deve ser exibida com "*", para não exibir a senha que está sendo digitada. A senha deve ser verificada com a senha armazenada no arquivo .sys criptografada.
+- na primeira vez, caso a senha não esteja cadastrada, o usuário deverá utilizar a senha 123456 para cadastrar a senha, e essa senha será criptografada e armazenada no arquivo .sys.
+- se a senha não bater com a senha cadastrada, o usuário não poderá acessar a tela de alteração do arquivo .sys e receberá uma mensagem de erro informando que a senha está incorreta.
+- se a senha bater, o usuário poderá acessar a tela de alteração do arquivo .sys e alterar o conteúdo do arquivo .sys.
+- essa nova tela de alteração do arquivo .sys deverá ter um botão "Salvar", que ao ser clicado, salvará as alterações no mesmo arquivo .sys.
+- essa nova tela de alteração do arquivo .sys deverá ter dois campos de texto, um para cada variável criada no arquivo .sys, e esses campos deverão ser preenchidos com os valores atuais das variáveis do arquivo .sys, onde o nome da variável estará à esquerda do campo de texto e protegida para não permitir alteração, e o valor da variável estará à direita do campo de texto.
+- exibir de uma forma bem clean na tela de alteração do arquivo .sys, com cores claras e fontes legíveis, para facilitar a leitura e a edição das variáveis.
+- exibir uma mensagem de sucesso na tela, informando que as alterações foram salvas com sucesso, após o usuário clicar no botão "Salvar" e as alterações serem salvas no arquivo .sys. E depois de exibir a mensagem de sucesso, redirecionar o usuário para a tela principal do sistema.
+
+
+
+
+- na tela digitar a senha, incluir um botão "Alterar Senha", onde o usário deve informar a senha anterior e depois duas vezes a nova senha.
+- validar se as duas novas senhas são iguais. senão exibir mensagem de erro.
+- se quando entrar na tela de "Editar Parâmeros", ainda não existir uma senha cadastrada no arquivo .sys, ir diretamente para a tela de Alterar Senha
+- na tela de alteração de senha, se ainda não existir uma senha cadastrada no arquivo .sys, a senha anterior digitada deve ser 123456.
+- A mensagem "No primeiro acesso, use 123456." deve ser exibida apenas na tela de alteração de senha e quando a senha ainda não estiver cadastrada no arquivo .sys.
+- Salvar a nova senha no arquivo .sys criptografada
+
