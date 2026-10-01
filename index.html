@@ -207,10 +207,12 @@
 
     async function loadConfig() {
       try {
-        let response = await fetch(`/api/config/${encodeURIComponent(getHtmlFileName())}`, { cache: 'no-store' });
+        let response = await fetch(apiUrl(`config/${encodeURIComponent(getHtmlFileName())}`), { cache: 'no-store' });
         if (!response.ok) {
           const configUrl = new URL(window.location.href);
-          configUrl.pathname = configUrl.pathname.replace(/\.html?$/i, '.sys');
+          configUrl.pathname = configUrl.pathname.endsWith('/')
+            ? `${configUrl.pathname}index.sys`
+            : configUrl.pathname.replace(/\.html?$/i, '.sys');
           configUrl.search = '';
           configUrl.hash = '';
           response = await fetch(configUrl, { cache: 'no-store' });
@@ -242,7 +244,15 @@
     }
 
     function getHtmlFileName() {
-      return decodeURIComponent(new URL(window.location.href).pathname.split('/').pop());
+      const pathname = new URL(window.location.href).pathname;
+      const fileName = pathname.endsWith('/') ? 'index.html' : pathname.split('/').pop();
+      return decodeURIComponent(fileName);
+    }
+
+    function apiUrl(endpoint) {
+      const pathname = new URL(window.location.href).pathname;
+      const basePath = pathname.endsWith('/') ? pathname : pathname.slice(0, pathname.lastIndexOf('/') + 1);
+      return `${basePath}api/${endpoint}`;
     }
 
     function escapeHtml(value) {
@@ -296,7 +306,7 @@
     async function openParameterEditor() {
       const pageName = getHtmlFileName();
       try {
-        const response = await fetch(`/api/session/${encodeURIComponent(pageName)}`, { cache: 'no-store' });
+        const response = await fetch(apiUrl(`session/${encodeURIComponent(pageName)}`), { cache: 'no-store' });
         if (!response.ok) throw new Error('Não foi possível verificar o login.');
         const session = await response.json();
         if (!session.hasPassword) {
@@ -313,7 +323,7 @@
       event.preventDefault();
       const password = document.getElementById('parameter-password').value;
       try {
-        const response = await fetch('/api/login', {
+        const response = await fetch(apiUrl('login'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ htmlName: getHtmlFileName(), password })
@@ -342,7 +352,7 @@
       }
 
       try {
-        const response = await fetch('/api/password/change', {
+        const response = await fetch(apiUrl('password/change'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ htmlName: getHtmlFileName(), oldPassword, newPassword, confirmPassword })
@@ -360,7 +370,7 @@
     }
 
     async function showParameterEditor() {
-      const response = await fetch(`/api/config/${encodeURIComponent(getHtmlFileName())}`, { cache: 'no-store' });
+      const response = await fetch(apiUrl(`config/${encodeURIComponent(getHtmlFileName())}`), { cache: 'no-store' });
       if (!response.ok) {
         showParameterLogin('Não foi possível ler os parâmetros do arquivo .sys.');
         return;
@@ -399,7 +409,7 @@
 
       const status = document.getElementById('parameter-save-status');
       try {
-        const response = await fetch('/api/config/save', {
+        const response = await fetch(apiUrl('config/save'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ htmlName: getHtmlFileName(), values })
