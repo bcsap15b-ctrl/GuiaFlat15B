@@ -207,7 +207,7 @@
 
     async function loadConfig() {
       try {
-        const response = await fetch('config.sys', { cache: 'no-store' });
+        const response = await fetch('teste.sys', { cache: 'no-store' });
         if (!response.ok) throw new Error('Arquivo config.sys não encontrado');
 
         const text = await response.text();
