@@ -1,11 +1,11 @@
-APTO=11A
-CONDOMINIO=Beach Class Solare
-CONDREDUZIDO=Solare
+APTO=12D
+CONDOMINIO=Beach Class Verano
+CONDREDUZIDO=Verano
 LUGAR1=Muro Alto
 LUGAR2=Porto de Galinhas
 ANDAR=térreo
 MAPS=https://goo.gl/maps/z9NJ1pRCPoeLB3E68
-WAZE=https://waze.com/ul?q=Beach%20Class%20Solare&navigate=yes
+WAZE=https://waze.com/ul?q=Beach%20Class%20Verano&navigate=yes
 REDE=MinhaREde
 SENHAWIFI=MinhaSenha
 CHECKIN=14h
