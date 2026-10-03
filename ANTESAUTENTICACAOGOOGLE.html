@@ -8,8 +8,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Ícones -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <style>
     body {
       background-color: #f0f4f8;
@@ -136,30 +134,26 @@
       <!-- Área de Conteúdo Dinâmico -->
       <div id="detail-content" class="p-4 flex-1 min-h-0 overflow-y-auto hide-scrollbar bg-gray-50">
       </div>
-      <div data-firebase-auth-status role="status" aria-live="polite" class="min-h-7 shrink-0 bg-[#002b49] px-3 py-1 text-center text-[9px] text-gray-300">Autenticação Firebase não iniciada</div>
     </div>
 
     <!-- RODAPÉ DE NAVEGAÇÃO -->
-    <footer class="bg-[#002b49] text-white px-6 pt-1.5 pb-2 shrink-0">
-      <div data-firebase-auth-status role="status" aria-live="polite" class="min-h-4 text-center text-[9px] text-gray-300">Autenticação Firebase não iniciada</div>
-      <nav class="flex justify-between items-center text-[10px]">
-        <button onclick="closeScreen()" class="flex flex-col items-center gap-0.5 text-cyan-300">
-          <i class="fa-solid fa-house text-sm"></i>
-          <span>Início</span>
-        </button>
-        <button class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-white">
-          <i class="fa-solid fa-heart text-sm"></i>
-          <span>Favoritos</span>
-        </button>
-        <button onclick="openScreen('localizacao')" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-white">
-          <i class="fa-solid fa-map-location-dot text-sm"></i>
-          <span>Mapa</span>
-        </button>
-        <button onclick="openMoreMenu()" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-white">
-          <i class="fa-solid fa-bars text-sm"></i>
-          <span>Mais</span>
-        </button>
-      </nav>
+    <footer class="bg-[#002b49] text-white py-2 px-6 flex justify-between items-center text-[10px] shrink-0">
+      <button onclick="closeScreen()" class="flex flex-col items-center gap-0.5 text-cyan-300">
+        <i class="fa-solid fa-house text-sm"></i>
+        <span>Início</span>
+      </button>
+      <button class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-white">
+        <i class="fa-solid fa-heart text-sm"></i>
+        <span>Favoritos</span>
+      </button>
+      <button onclick="openScreen('localizacao')" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-white">
+        <i class="fa-solid fa-map-location-dot text-sm"></i>
+        <span>Mapa</span>
+      </button>
+      <button onclick="openMoreMenu()" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-white">
+        <i class="fa-solid fa-bars text-sm"></i>
+        <span>Mais</span>
+      </button>
     </footer>
 
   </div>
@@ -167,23 +161,8 @@
   <!-- SCRIPT COM TODO O CONTEÚDO DAS TELAS -->
   <script>
     const appConfig = { APTO: '', CONDOMINIO: '' };
-    const firebaseConfig = {
-      apiKey: "AIzaSyDnGnx_iRYWf2Ixs8Evz4e7EdxeI3KlQbo",
-      authDomain: "guiaflat.firebaseapp.com",
-      databaseURL: "https://guiaflat-default-rtdb.firebaseio.com",
-      projectId: "guiaflat",
-      storageBucket: "guiaflat.firebasestorage.app",
-      messagingSenderId: "97604135744",
-      appId: "1:97604135744:web:2253680c0f8f2ae96ae8a5"
-    };
-    const firebaseApp = firebase.initializeApp(firebaseConfig);
-    const firebaseAuth = firebase.auth(firebaseApp);
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
     let firebaseUserKey = '';
     let firebasePasswordHash = '';
-    let firebaseAuthToken = '';
-    let firebaseAuthenticatedUser = null;
-    let firebaseAuthenticationPromise = null;
     let isParameterAuthenticated = false;
 
     function getApto() {
@@ -269,172 +248,15 @@
     }
 
     function openMoreMenu() {
-      if (getAdminMode() !== 'SIM') {
+      if (!getAdminMode()) {
         alert('Esta função não está disponível para hóspedes.');
         return;
       }
       openScreen('mais');
-      authenticateFirebase().catch(() => {});
     }
 
-    function showFlatOperationDenied(action) {
-      showParameterScreen(action, `<p role="alert" class="rounded-lg border border-red-200 bg-red-50 p-4 text-center text-sm font-semibold text-red-800">${escapeHtml(action)} não permitida!</p>`);
-      window.setTimeout(() => openScreen('mais'), 1500);
-    }
-
-    function getAdminFirebaseUrl(flat, token) {
-      const databaseUrl = firebaseConfig.databaseURL.replace(/\/+$/, '');
-      return `${databaseUrl}/usuarios/${encodeURIComponent(flat)}.json?auth=${encodeURIComponent(token)}`;
-    }
-
-    async function getFlatAdminToken(action) {
-      const user = firebaseAuth.currentUser;
-      if (!user || !isFlatAdminEmail(user.email || '')) {
-        throw new Error(`${action} não permitida!`);
-      }
-      firebaseAuthToken = await user.getIdToken();
-      return firebaseAuthToken;
-    }
-
-    async function readFirebaseResponse(response, action) {
-      const responseText = await response.text();
-      let body = responseText || null;
-      try {
-        body = responseText ? JSON.parse(responseText) : null;
-      } catch {
-        body = responseText;
-      }
-      if (!response.ok) {
-        const details = typeof body === 'string' ? body : JSON.stringify(body, null, 2);
-        throw new Error(`${action} falhou (HTTP ${response.status} ${response.statusText}).\n${details || '(resposta vazia)'}`);
-      }
-      return body;
-    }
-
-    function showFlatAdminFormError(elementId, error) {
-      const errorElement = document.getElementById(elementId);
-      if (errorElement) {
-        errorElement.innerHTML = `<pre class="whitespace-pre-wrap break-words">${escapeHtml(error.message)}</pre>`;
-      }
-      console.error(error);
-    }
-
-    function openFlatDeleteScreen() {
-      if (!isFlatAdminEmail(firebaseAuth.currentUser?.email || '')) {
-        showFlatOperationDenied('Exclusão');
-        return;
-      }
-
-      showParameterScreen('Excluir FLAT', `
-        <form onsubmit="submitFlatDeletion(event)" class="mx-auto max-w-sm space-y-4">
-          <label for="delete-flat-code" class="block text-sm font-semibold text-gray-700">Flat</label>
-          <input id="delete-flat-code" name="flat" type="text" maxlength="10" pattern="[A-Za-z0-9-]{1,10}" required class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-100">
-          <div id="delete-flat-error" role="alert" class="text-sm text-red-700"></div>
-          <div class="grid grid-cols-2 gap-2">
-            <button type="submit" class="rounded-lg bg-red-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-800">Excluir</button>
-            <button type="button" onclick="openScreen('mais')" class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-[#002b49] hover:bg-gray-50">Cancelar</button>
-          </div>
-        </form>
-      `);
-    }
-
-    async function submitFlatDeletion(event) {
-      event.preventDefault();
-      const flat = document.getElementById('delete-flat-code').value.trim();
-      try {
-        if (!/^[A-Za-z0-9-]{1,10}$/.test(flat)) throw new Error('Informe um código de Flat válido.');
-        const token = await getFlatAdminToken('Exclusão');
-        const response = await fetch(getAdminFirebaseUrl(flat, token), { method: 'DELETE' });
-        await readFirebaseResponse(response, 'Exclusão');
-        showParameterScreen('Excluir FLAT', '<p role="status" class="rounded-lg border border-green-200 bg-green-50 p-4 text-center text-sm font-semibold text-green-800">Flat excluído com sucesso.</p>');
-        window.setTimeout(() => openScreen('mais'), 1300);
-      } catch (error) {
-        showFlatAdminFormError('delete-flat-error', error);
-      }
-    }
-
-    function openFlatCreateScreen() {
-      if (!isFlatAdminEmail(firebaseAuth.currentUser?.email || '')) {
-        showFlatOperationDenied('Inclusão');
-        return;
-      }
-
-      showParameterScreen('Incluir FLAT', `
-        <form onsubmit="submitFlatCreation(event)" class="mx-auto max-w-sm space-y-4">
-          <label for="new-flat-code" class="block text-sm font-semibold text-gray-700">Flat</label>
-          <input id="new-flat-code" name="flat" type="text" maxlength="10" pattern="[A-Za-z0-9-]{1,10}" required class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-100">
-          <label for="new-flat-email" class="block text-sm font-semibold text-gray-700">Email Anfitrião</label>
-          <input id="new-flat-email" name="email" type="email" required class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-100">
-          <div id="create-flat-error" role="alert" class="text-sm text-red-700"></div>
-          <div class="grid grid-cols-2 gap-2">
-            <button type="submit" class="rounded-lg bg-[#002b49] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#03446b]">Incluir</button>
-            <button type="button" onclick="openScreen('mais')" class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-[#002b49] hover:bg-gray-50">Cancelar</button>
-          </div>
-        </form>
-      `);
-    }
-
-    async function submitFlatCreation(event) {
-      event.preventDefault();
-      const flat = document.getElementById('new-flat-code').value.trim();
-      const email = document.getElementById('new-flat-email').value.trim();
-      try {
-        if (!/^[A-Za-z0-9-]{1,10}$/.test(flat)) throw new Error('Informe um código de Flat válido.');
-        if (!email) throw new Error('Informe o Email Anfitrião.');
-        const token = await getFlatAdminToken('Inclusão');
-        const url = getAdminFirebaseUrl(flat, token);
-        const existingResponse = await fetch(url);
-        const existingFlat = await readFirebaseResponse(existingResponse, 'Verificação de cadastro');
-        if (existingFlat !== null) throw new Error(`O Flat "${flat}" já existe no Firebase.`);
-
-        const response = await fetch(url, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            APTO: flat,
-            EMA: email,
-            CONDOMINIO: 'Beach Class Solare',
-            CONDREDUZIDO: 'Solare',
-            LUGAR1: 'Muro Alto',
-            LUGAR2: 'Porto de Galinhas',
-            ANDAR: 'térreo',
-            MAPS: 'https://goo.gl/maps/z9NJ1pRCPoeLB3E68',
-            WAZE: 'https://waze.com/ul?q=Beach%20Class%20Verano&navigate=yes',
-            REDE: 'MinhaREde',
-            SENHAWIFI: 'MinhaSenha',
-            CHECKIN: '14h',
-            CHECKOUT: '11h',
-            NOMERESTAURANTE: 'Onze Praia',
-            ECOMGARDEN: 'e com Garden',
-            EGARDEN: 'e Garden',
-            CAFE: 'Frutas frescas, tapiocas, pães variados e outras opções.',
-            PRATO: 'Peixes, massas e outras preparações com ingredientes selecionados.',
-            PISCINA: 'Petiscos, drinks e bebidas geladas.',
-            RESTWEB: 'https://onzepraiarestaurante.com',
-            RESTWHAT: '558192343694',
-            RESTWHATEXIB: '(81) 9234-3694',
-            CONVENIENCIA: 'Rede Redmart',
-            CONVENIENCIAWEB: 'https://www.instagram.com/redmart.br?stkn=dzNidHRhcTF5cmln',
-            FLATINSTAGRAM: 'https://instagram.com/flatxxx',
-            FLATAIRBNB: 'https://airbnb.com/h/flatxxx',
-            FLATPERFILINSTAGRAM: '@flatxxx',
-            ANFITR1WHAT: '5511993891333',
-            ANFITR1WHATEXIB: '(11) 99389-1333',
-            ANFITR2WHAT: '5511983055777',
-            ANFITR2WHATEXIB: '(11) 98305-5777',
-            BUGGY: 'Buggy do Japa',
-            BUGGYWHAT: '558191546190',
-            BUGGYDESCR: 'Passeio de Buggy, Jet, lancha, translado aeroporto.',
-            BUGGYPERFILINSTA: 'buggydojapa',
-            SENHAHASH: ' '
-          })
-        });
-        await readFirebaseResponse(response, 'Inclusão');
-        showParameterScreen('Incluir FLAT', '<p role="status" class="rounded-lg border border-green-200 bg-green-50 p-4 text-center text-sm font-semibold text-green-800">Flat incluído com sucesso.</p>');
-        window.setTimeout(() => openScreen('mais'), 1300);
-      } catch (error) {
-        showFlatAdminFormError('create-flat-error', error);
-      }
+    function showFlatActionNotice(action) {
+      showParameterScreen(action, '<p class="rounded-lg border border-amber-200 bg-amber-50 p-4 text-center text-sm text-amber-900">Esta opção ainda não está disponível.</p>');
     }
 
     function apiUrl(endpoint) {
@@ -444,95 +266,7 @@
     }
 
     function firebaseUserUrl() {
-      const authQuery = firebaseAuthToken ? `?auth=${encodeURIComponent(firebaseAuthToken)}` : '';
-      return `https://guiaflat-default-rtdb.firebaseio.com/usuarios/${encodeURIComponent(firebaseUserKey)}.json${authQuery}`;
-    }
-
-    function setFirebaseAuthStatus(message, state = 'pending') {
-      document.querySelectorAll('[data-firebase-auth-status]').forEach((status) => {
-        status.textContent = message;
-        status.classList.toggle('text-green-300', state === 'success');
-        status.classList.toggle('text-red-300', state === 'error');
-        status.classList.toggle('text-gray-300', state === 'pending');
-      });
-    }
-
-    function hasFullFirebaseMenuAccess(user) {
-      const authenticatedEmail = user?.email?.trim().toUpperCase();
-      const flatEmail = String(appConfig.EMA || '').trim().toUpperCase();
-      return Boolean(authenticatedEmail && (
-        authenticatedEmail === flatEmail ||
-        isFlatAdminEmail(authenticatedEmail)
-      ));
-    }
-
-    function isFlatAdminEmail(email) {
-      return ['MSERGIOFC@GMAIL.COM', 'BCSAP15B@GMAIL.COM'].includes(email?.trim().toUpperCase());
-    }
-
-    function updateFirebaseMenuVisibility() {
-      const currentUser = firebaseAuth.currentUser;
-      const isSignedIn = Boolean(currentUser);
-      const hasFullAccess = hasFullFirebaseMenuAccess(currentUser);
-      const isFlatAdmin = isFlatAdminEmail(currentUser?.email || '');
-
-      document.getElementById('firebase-flat-info-button')?.classList.toggle('hidden', !hasFullAccess);
-      document.getElementById('firebase-logout-button')?.classList.toggle('hidden', !isSignedIn);
-      document.getElementById('firebase-add-flat-button')?.classList.toggle('hidden', !isFlatAdmin);
-      document.getElementById('firebase-delete-flat-button')?.classList.toggle('hidden', !isFlatAdmin);
-    }
-
-    async function authenticateFirebase() {
-      if (firebaseAuthenticationPromise) return firebaseAuthenticationPromise;
-
-      if (!firebaseConfig.apiKey || firebaseConfig.apiKey === 'SUA_WEB_API_KEY') {
-        const error = new Error('Configure a Web API Key do Firebase no index.html.');
-        setFirebaseAuthStatus(`Falha na autenticação Firebase: ${error.message}`, 'error');
-        return Promise.reject(error);
-      }
-
-      setFirebaseAuthStatus('Entrando com Google...');
-      const signIn = firebaseAuth.currentUser
-        ? Promise.resolve({ user: firebaseAuth.currentUser })
-        : firebaseAuth.signInWithPopup(googleProvider);
-
-      firebaseAuthenticationPromise = signIn.then(async ({ user }) => {
-        firebaseAuthenticatedUser = user;
-        firebaseAuthToken = await user.getIdToken();
-        const accountIdentity = [user.displayName, user.email].filter(Boolean).join(' • ') || user.uid;
-        setFirebaseAuthStatus(`Conectado ao Firebase • ${accountIdentity}`, 'success');
-        updateFirebaseMenuVisibility();
-        return user;
-      }).catch((error) => {
-        setFirebaseAuthStatus(`Falha na autenticação Firebase: ${error.message}`, 'error');
-        console.warn('Não foi possível autenticar no Firebase.', error);
-        throw error;
-      }).finally(() => {
-        firebaseAuthenticationPromise = null;
-      });
-
-      return firebaseAuthenticationPromise;
-    }
-
-    firebaseAuth.onAuthStateChanged((user) => {
-      firebaseAuthenticatedUser = user;
-      if (!user) firebaseAuthToken = '';
-      updateFirebaseMenuVisibility();
-    });
-
-    async function logoutFirebase() {
-      setFirebaseAuthStatus('Saindo do Firebase...');
-      try {
-        await firebaseAuth.signOut();
-        firebaseAuthenticatedUser = null;
-        firebaseAuthToken = '';
-        updateFirebaseMenuVisibility();
-        setFirebaseAuthStatus('Desconectado do Firebase');
-        closeScreen();
-      } catch (error) {
-        setFirebaseAuthStatus(`Falha ao sair do Firebase: ${error.message}`, 'error');
-        console.warn('Não foi possível sair do Firebase.', error);
-      }
+      return `https://guiaflat-default-rtdb.firebaseio.com/usuarios/${encodeURIComponent(firebaseUserKey)}.json`;
     }
 
     function base64ToBytes(value) {
@@ -620,8 +354,13 @@
     }
 
     function openParameterEditor() {
-      if (!hasFullFirebaseMenuAccess(firebaseAuth.currentUser)) return;
-      showParameterEditor();
+      if (isParameterAuthenticated) {
+        showParameterEditor();
+      } else if (!firebasePasswordHash) {
+        showPasswordChange(true);
+      } else {
+        showParameterLogin();
+      }
     }
 
     async function submitParameterLogin(event) {
@@ -706,38 +445,20 @@
 
       const status = document.getElementById('parameter-save-status');
       try {
-        const user = firebaseAuth.currentUser;
-        if (!user) {
-          status.textContent = 'Sessão Firebase expirada. Entre novamente.';
-          return;
-        }
-        if (!hasFullFirebaseMenuAccess(user)) {
-          status.textContent = 'Esta conta não tem autorização para salvar as informações do FLAT.';
-          return;
-        }
-
-        firebaseAuthToken = await user.getIdToken();
-        const response = await fetch(firebaseUserUrl(), {
-          method: 'PATCH',
+        const response = await fetch(apiUrl('config/save'), {
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(values)
+          body: JSON.stringify({ apto: getRequestedApto(), values })
         });
-        const responseBody = await response.text();
-        let result;
-        try {
-          result = responseBody ? JSON.parse(responseBody) : null;
-        } catch {
-          result = { error: responseBody };
-        }
+        const result = await response.json();
         if (!response.ok) {
-          status.textContent = result?.error || 'O Firebase não permitiu salvar as informações.';
+          status.textContent = result.error || 'Não foi possível salvar os parâmetros.';
           return;
         }
         showParameterScreen('Editar Parâmetros', '<p class="rounded-lg border border-green-200 bg-green-50 p-4 text-center text-sm font-semibold text-green-800">Alterações salvas com sucesso.</p>');
         window.setTimeout(() => window.location.reload(), 1300);
       } catch (error) {
-        status.textContent = `Não foi possível salvar no Firebase: ${error.message}`;
-        console.warn('Não foi possível salvar os parâmetros no Firebase.', error);
+        status.textContent = 'Não foi possível conectar ao servidor local.';
       }
     }
 
@@ -1498,22 +1219,20 @@
         title: 'Mais',
         content: `
           <div class="space-y-2">
-            <button id="firebase-flat-info-button" onclick="openParameterEditor()" class="hidden flex w-full items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 text-left text-sm font-semibold text-[#002b49] hover:bg-cyan-50">
+            <button onclick="openParameterEditor()" class="flex w-full items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 text-left text-sm font-semibold text-[#002b49] hover:bg-cyan-50">
               <i class="fa-solid fa-circle-info text-cyan-700"></i>
               <span>Informações do FLAT</span>
             </button>
-            <button id="firebase-logout-button" onclick="logoutFirebase()" class="hidden flex w-full items-center gap-3 rounded-lg border border-red-200 bg-white p-3 text-left text-sm font-semibold text-red-700 hover:bg-red-50">
-              <i class="fa-solid fa-right-from-bracket text-red-600"></i>
-              <span>Logout</span>
-            </button>
-            <button id="firebase-add-flat-button" onclick="openFlatCreateScreen()" class="hidden flex w-full items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 text-left text-sm font-semibold text-[#002b49] hover:bg-cyan-50">
-              <i class="fa-solid fa-plus text-cyan-700"></i>
-              <span>Incluir FLAT</span>
-            </button>
-            <button id="firebase-delete-flat-button" onclick="openFlatDeleteScreen()" class="hidden flex w-full items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 text-left text-sm font-semibold text-red-700 hover:bg-red-50">
-              <i class="fa-solid fa-trash text-red-600"></i>
-              <span>Excluir FLAT</span>
-            </button>
+            ${getAdminMode() === 'GER' ? `
+              <button onclick="showFlatActionNotice('Incluir FLAT')" class="flex w-full items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 text-left text-sm font-semibold text-[#002b49] hover:bg-cyan-50">
+                <i class="fa-solid fa-plus text-cyan-700"></i>
+                <span>Incluir FLAT</span>
+              </button>
+              <button onclick="showFlatActionNotice('Excluir FLAT')" class="flex w-full items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 text-left text-sm font-semibold text-red-700 hover:bg-red-50">
+                <i class="fa-solid fa-trash text-red-600"></i>
+                <span>Excluir FLAT</span>
+              </button>
+            ` : ''}
           </div>
         `
       }
@@ -1534,7 +1253,6 @@
       title.innerText = data.title;
       content.innerHTML = data.content;
       screen.classList.remove('hidden');
-      updateFirebaseMenuVisibility();
     }
 
     function closeScreen() {

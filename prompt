@@ -34,3 +34,215 @@ Alterar o conteúdo  "arquivo".sys atravé de tela.
 - A mensagem "No primeiro acesso, use 123456." deve ser exibida apenas na tela de alteração de senha e quando a senha ainda não estiver cadastrada no arquivo .sys.
 - Salvar a nova senha no arquivo .sys criptografada
 
+
+
+
+Para testar executar essa página index.html, eu coloquei a página no github e a partir de agora, consigo acessar a página pelo link
+https://github.com/bcsap15b-ctrl/GuiaFlat15B
+
+Porem eu queria passar um parâmetro por querie string para o index.html.
+como devo passar?
+https://github.com/bcsap15b-ctrl/GuiaFlat15B/in
+
+https://bcsap15b-ctrl.github.io/GuiaFlat15B/?APTO=12B
+
+ótimo.
+Então utilizar a variável APTO recebida por essa querystring, para recuperar os dados do arquivo .sys, em vez de usar o nome da página html em execução, pois a partir de agora teremos apenas uma página html, e os nomes dos arquivos .sys, serão pegos a partir da querystring.
+
+
+- o parâmetro APTO da querystring, só deve ser utilizada para recuperar o arquivo .sys e mais nada. a variável APTO que está no arquivo .sys deve ser usada para preecher as outras informações na página
+- se não receber o parâmetro APTO na querystring, utilizar APTO=solare15B.
+- Se não encontrar o arquivo .sys, exibir a mensagem de "Guia não encontrado" e não deixar acessar os dados existentes.
+
+chamar o index.html pelo powershell
+http://127.0.0.1:8000/?APTO=verano12d
+
+
+
+
+
+Migração para acessar dados no firestore, em vez de acessar o arquivo .sys
+- estamos tendo problema para alterar o arquivo .sys no github e para resolver, vamos deixar de pegar essas informações do arquivo .sys e começar a utilizar as informações da base de dado do firebase.
+- no arquivo @guiafirebase tem uma explicação de como acessar as bases do firebase.
+- favor alterar o index.html, para deixar de pegar as informações do arquivo .sys e recuperar do firebase
+- no arquivo tudo.json, tem um exemplo do json que estará salvo no firebase
+- o parâmetro que a página atual utiliza para montar o nome do arquivo .sys e pegar as informações, agora deve ser usado para recuperar as informacões do firebase, onde o node "usuarios" deve ser igual parâmetro recebido APTO na querystring
+- se não encontrar o "usuario", continuar exibindo a mensagem de guia não encontrado.
+- se encontrar, usar todas os conteúdos do dado retornado do json, para substituir os dados da página, exatamente como está sendo feito com as variáveis do arquivo .sys. Os nomes das variáveis do arquivo .sys são identicas ao do json.
+
+
+- verifiquei que no index.htm ainda tem referência ao arquivo .sys. favor tirar todas as referencias ao arquivo .sys e utilizar o firebase.
+- Exceto o botão salvar, pois vamos falar sobre ele depois.
+
+
+
+http://127.0.0.1:8000/?APTO=verano12d
+http://127.0.0.1:8000/?APTO=verano12d&ADM=SIM
+http://127.0.0.1:8000/?APTO=verano12d&ADM=GER
+
+Na página de "Mais"
+- Alterar a opção "Editar Parâmetros" para "Informações do FLAT"
+- Além dessa opção, incluir as opções "Incluir FLAT" e "Excluir FLAT".
+
+Receber mais um parâmetro pela a querystring. O parametro ADM.
+- Efetuar os seguintes tratamentos para o novo parâmetro ADM:
+. Se não for informado ou for diferente de "SIM" ou "GER", ao clicar no menu "Mais", exibir um alerta informando que a função não está disponível para hóspede
+. se for "SIM", exibir apenas a opção "Informações do FLAT" da página "Mais"
+. se for "GER", exibir TODAS as opções da página "Mais"
+
+Autenticar usuário no FIREBASE
+- Pretendo quando o usuário conseguir entrar na páginas "Mais", efetuar uma autenticação no firebase.
+- você consegue verificar com fazer isso no arquivo guiaautenticacao
+- mostrar no inferior da tela se a conexão foi com sucesso e o usuário queestá conectado
+
+- a SUA_API_KEY="1:97604135744:web:2253680c0f8f2ae96ae8a5"
+- não vou usar mais a autenticação anonima. vou usar a autenticação por google, onde tem uma pequena documentação em guiaautenticacaocomgoogle. se precisar de mais informações, pode pesquisar na internet.
+- Nome público do projeto: project-97604135744
+
+Estávamos implementando alterei manualmente a const firebaseConfig. consegue verificar se agora está funcionando?
+
+. Estávamos efetuando a seguinte implementação para Autenticar usuário no FIREBASE na página index.html:
+- Pretendo quando o usuário conseguir entrar na páginas "Mais", efetuar uma autenticação no firebase.
+- você consegue verificar com fazer isso no arquivo guiaautenticacao
+- mostrar no inferior da tela se a conexão foi com sucesso e o usuário queestá conectado
+. você concluiu, mas faltou algumas informações de id da web api.
+. eu alterei manualmente a const firebaseConfig. 
+      apiKey: 'project-97604135744',
+      authDomain: 'project-97604135744.firebaseapp.com',
+      databaseURL: 'https://guiaflat-default-rtdb.firebaseio.com',
+      projectId: 'project-97604135744',
+      messagingSenderId: '97604135744',
+      appId: '1:97604135744:web:2253680c0f8f2ae96ae8a5'      
+. consegue verificar se agora está funcionando? 
+. usar http://127.0.0.1:8000/?APTO=solare11e&ADM=GER
+
+const firebaseConfig = {
+  apiKey: "AIzaSy...", // Cole aqui a Chave de API da Web (geralmente começa com AIza)
+  authDomain: "guiaflat.firebaseapp.com",
+  projectId: "guiaflat",
+  databaseURL: "https://guiaflat-default-rtdb.firebaseio.com", // O link correto do seu banco
+  storageBucket: "guiaflat.firebasestorage.app",
+  messagingSenderId: "97604135744", // O número do projeto vai apenas aqui!
+  appId: "1:97604135744:web:2253680c0f8f2ae96ae8a5" // Substitua pelo ID gerado para o seu app web
+};
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDnGnx_iRYWf2Ixs8Evz4e7EdxeI3KlQbo",
+  authDomain: "guiaflat.firebaseapp.com",
+  databaseURL: "https://guiaflat-default-rtdb.firebaseio.com",
+  projectId: "guiaflat",
+  storageBucket: "guiaflat.firebasestorage.app",
+  messagingSenderId: "97604135744",
+  appId: "1:97604135744:web:2253680c0f8f2ae96ae8a5"
+};
+
+
+http://127.0.0.1:8000/?APTO=solare11e&ADM=GER
+http://localhost:8000/?APTO=solare11e&ADM=GER
+
+
+ajustei para http://localhost:8000/?APTO=solare11e&ADM=GER e funcionou.
+coloque no rodapé da página mais, também o email que está conectado no google.
+
+- na página "Mais", quando o usuário estiver conectado ao firebase, exibir uma opçção de "Logout" na página
+
+
+- após efetuar o logout, sair da página "Mais" e voltar para a página principal.
+
+
+http://localhost:8000/?APTO=solare11e&ADM=SIM
+
+
+msergiofcdesenv@gmail.com
+
+- botão "Logout" está sumindo depois de um tempo. Enquanto o usuário estiver logado, esse botão precisa ficar na tela.
+- vamos tirar o tratamento para exibir os botões "Incluir FLAT" e "Excluir FLAT", quando ADM=GER. Esses botões serão exibidos apenas quando o email conect for msergiofc@gmail.com ou bcsap15b@gmail.com
+
+
+. Se o parâmetro ADM não for informado ou for diferente de "SIM", ao clicar no menu "Mais", informar que a função não está disponível para hóspede
+
+- quando o usuário não estiver logado, não exibir nenhum botão na tela "Mais"
+
+
+Na página "Mais" na opção "Informações do FLAT":
+- Tirar a solicitação de senha dessa página
+
+Na página "Mais":
+- Após o login, se Ucase(email autenticado) diferente de UCASE(email do "usuarios" no firebase - variável "EMA"), exibir apenas o botão "Logout" na tela.
+- Exceto se o email autenticado for os emails abaixo que podem ver TODAS os botões:
+. msergiofc@gmail.com 
+. bcsap15b@gmail.com
+
+
+- exibir os botões "Incluir FLAT" e "Excluir FLAT" apenas se efetuar a autenticação pelos emails abaixo:
+. msergiofc@gmail.com 
+. bcsap15b@gmail.com
+
+Nova tela de exclusão:
+- Se autenticação NÃO foi pelos emails abaixo, ao exibir a tela, mostrar a mensagem "Exclusão não permitida!" e voltar para a tela "Mais":
+. msergiofc@gmail.com 
+. bcsap15b@gmail.com
+- Solicitar a digitação do campo "Flat"
+- incluir os botões "Excluir" e "Cancelar"
+- Se clicar em "Cancelar", voltar para a tela "Mais"
+- Se clicar em "Excluir", excluir do firebase o "usuarios" = flat digitado
+- Se der erro na operação com o firebase, exibir logs do erro na tela.
+
+
+Nova tela de inclusão:
+- Se autenticação NÃO foi pelos emails abaixo, ao exibir a tela, mostrar a mensagem "Inclusão não permitida!" e voltar para a tela "Mais":
+. msergiofc@gmail.com 
+. bcsap15b@gmail.com
+- Solicitar a digitação do campo "Flat" e "Email Anfitrião"
+- incluir os botões "Incluir" e "Cancelar"
+- Se clicar em "Cancelar", voltar para a tela "Mais"
+- Se clicar em "Incluir", incluir no node "usuarios" do json abaixo:
+  "usuarios" = ao conteúdo digitado no campo flat
+    Flat digitado no campo flat: {  
+      "APTO": "99T",
+      "EMA": email digitado no campo Email Anfitrião,
+      "CONDOMINIO": "Beach Class Solare",
+      "CONDREDUZIDO": "Solare",
+      "LUGAR1": "Muro Alto",
+      "LUGAR2": "Porto de Galinhas",
+      "ANDAR": "térreo",
+      "MAPS": "https://goo.gl/maps/z9NJ1pRCPoeLB3E68",
+      "WAZE": "https://waze.com/ul?q=Beach%20Class%20Verano&navigate=yes",
+      "REDE": "MinhaREde",
+      "SENHAWIFI": "MinhaSenha",
+      "CHECKIN": "14h",
+      "CHECKOUT": "11h",
+      "NOMERESTAURANTE": "Onze Praia",
+      "ECOMGARDEN": "e com Garden",
+      "EGARDEN": "e Garden",
+      "CAFE": "Frutas frescas, tapiocas, pães variados e outras opções.",
+      "PRATO": "Peixes, massas e outras preparações com ingredientes selecionados.",
+      "PISCINA": "Petiscos, drinks e bebidas geladas.",
+      "RESTWEB": "https://onzepraiarestaurante.com",
+      "RESTWHAT": "558192343694",
+      "RESTWHATEXIB": "(81) 9234-3694",
+      "CONVENIENCIA": "Rede Redmart",
+      "CONVENIENCIAWEB": "https://www.instagram.com/redmart.br?stkn=dzNidHRhcTF5cmln",
+      "FLATINSTAGRAM": "https://instagram.com/flatxxx",
+      "FLATAIRBNB": "https://airbnb.com/h/flatxxx",
+      "FLATPERFILINSTAGRAM": "@flatxxx",
+      "ANFITR1WHAT": "5511993891333",
+      "ANFITR1WHATEXIB": "(11) 99389-1333",
+      "ANFITR2WHAT": "5511983055777",
+      "ANFITR2WHATEXIB": "(11) 98305-5777",
+      "BUGGY": "Buggy do Japa",
+      "BUGGYWHAT": "558191546190",
+      "BUGGYDESCR": "Passeio de Buggy, Jet, lancha, translado aeroporto.",
+      "BUGGYPERFILINSTA": "buggydojapa",
+      "SENHAHASH": " "
+    }
+
+- Se der erro na operação com o firebase, exibir logs do erro na tela.
+
+
+deixar para o final:
+Na tela de "Informações do FLAT"
+- Exibir a seguinte mensagem no inferior da tela:
+"OBS.: As informações preenchidas nesta tela serão utilizadas no seu Guia do Hóspede e ficarão disponíveis em um site público na internet.
+Isso significa que os dados informados aqui poderão ser visualizados por qualquer pessoa. Por isso, NÃO informar os dados que NÃO queira tornar públicos."
+- Se der erro na operação com o firebase, exibir logs do erro na tela.

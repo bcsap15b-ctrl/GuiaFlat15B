@@ -1,0 +1,79 @@
+Para acessar o seu Realtime Database de forma autenticada sem usar o SDK do Firebase, você deve utilizar as APIs REST oficiais do Google/Firebase.
+
+O processo consiste em duas etapas usando requisições fetch comuns no JavaScript:
+
+Fazer uma requisição para a API de Autenticação do Firebase (usando autenticação anônima, por exemplo) para obter um ID Token.
+
+Usar esse ID Token como parâmetro ?auth=TOKEN na requisição para a API REST do seu banco de dados.
+
+Passo 1: Ative o Provedor no Console
+
+Antes de rodar o código, vá até o Console do Firebase > Authentication > guia Sign-in method e habilite o provedor Anônimo (Anonymous).
+
+Passo 2: Código HTML e JavaScript puro (Sem SDK)
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Acesso REST sem SDK</title>
+</head>
+<body>
+    <h1>Acesso REST Autenticado</h1>
+    <button id="btnAcessar">Gravar Dados Autenticados</button>
+
+    <script>
+        const apiKey = "SUA_API_KEY"; // Substitua pela sua Web API Key do Firebase
+        const dbUrl = "https://guiaflat-default-rtdb.firebaseio.com";
+
+        async function gravarDadosSemSDK() {
+            try {
+                // 1. Faz login anônimo via REST para obter o ID Token
+                const authResponse = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ returnSecureToken: true })
+                });
+
+                const authData = await authResponse.json();
+                
+                if (!authResponse.ok) {
+                    throw new Error(authData.error.message);
+                }
+
+                const idToken = authData.idToken; // Token de autenticação temporário
+
+                // 2. Envia os dados para o Realtime Database usando o ID Token obtido
+                const rtdbResponse = await fetch(`${dbUrl}/logs_acesso.json?auth=${idToken}`, {
+                    method: "POST", // Altere para GET, PUT, etc., conforme necessário
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        mensagem: "Gravado com sucesso via REST puro!",
+                        timestamp: Date.now()
+                    })
+                });
+
+                const rtdbData = await rtdbResponse.json();
+                console.log("Sucesso:", rtdbData);
+                alert("Dados gravados de forma autenticada!");
+
+            } catch (error) {
+                console.error("Erro na operação:", error);
+                alert("Falha: " + error.message);
+            }
+        }
+
+        document.getElementById("btnAcessar").addEventListener("click", gravarDadosSemSDK);
+    </script>
+</body>
+</html>
+Por que isso funciona com suas regras de segurança?
+
+Como você está gerando e enviando um idToken válido, o Firebase reconhece que a requisição é de um usuário autenticado. Isso significa que você pode manter regras de segurança seguras no seu banco, como:
+
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+}

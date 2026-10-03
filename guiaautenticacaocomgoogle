@@ -1,0 +1,58 @@
+Sim, com certeza! Você pode usar a autenticação do Google diretamente na sua página HTML [FACT]. Como seu projeto é Web e você utiliza JavaScript/TypeScript, a forma mais fácil e moderna de fazer isso é utilizando o SDK do Firebase via módulos (ES Modules) diretamente no seu arquivo HTML [FACT].
+
+Aqui está um exemplo prático de como estruturar sua página HTML para realizar o login com o Google usando um pop-up [FACT]:
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Login com Google - GuiaFlat</title>
+</head>
+<body>
+  <h2>Bem-vindo ao GuiaFlat</h2>
+  <button id="loginBtn">Entrar com o Google</button>
+
+  <!-- Script utilizando módulos modernos -->
+  <script type="module">
+    // Importando as funções necessárias do SDK do Firebase via CDN
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    // Configurações do seu projeto Firebase
+    const firebaseConfig = {
+      apiKey: "SUA_API_KEY", // Substitua pela chave do seu projeto
+      authDomain: "guiaflat.firebaseapp.com",
+      projectId: "guiaflat",
+      storageBucket: "guiaflat.firebasestorage.app",
+      messagingSenderId: "97604135744",
+      appId: "SEU_APP_ID" // Substitua pelo ID do seu aplicativo web
+    };
+
+    // Inicializando o Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider(); // Provedor do Google
+
+    // Evento de clique para disparar o login
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          // Usuário logado com sucesso!
+          const user = result.user;
+          alert(`Olá, ${user.displayName}! Você foi autenticado.`);
+          console.log("Dados do usuário:", user);
+        })
+        .catch((error) => {
+          console.error("Erro ao autenticar:", error.message);
+        });
+    });
+  </script>
+</body>
+</html>
+O que você precisa fazer antes de rodar o código:
+
+Ativar o Google no Console do Firebase: Vá em Authentication > aba Sign-in method, clique em Adicionar novo provedor, selecione Google, ative-o e salve [FACT].
+
+Substituir as credenciais: No objeto firebaseConfig do código acima, substitua os valores de exemplo pelas credenciais reais do seu aplicativo Web (você as encontra nas configurações do projeto no console do Firebase).
+
+Domínios Autorizados: Para que o Google permita o login, o site onde sua página HTML está hospedada precisa estar na lista de "Domínios autorizados" nas configurações de Authentication [FACT]. O Firebase já autoriza o localhost automaticamente, então você pode testar localmente no seu computador sem problemas!

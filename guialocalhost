@@ -1,0 +1,39 @@
+Esse erro ocorre porque o domínio (endereço de web) onde o seu arquivo HTML está rodando não está cadastrado na lista de Domínios Autorizados do Firebase Authentication [1.1].
+
+O Firebase bloqueia operações de autenticação (OAuth) por motivos de segurança se elas forem iniciadas a partir de domínios desconhecidos para evitar que outras pessoas usem suas credenciais [1.1].
+
+Os domínios padrão autorizados no seu projeto GuiaFlat são:
+
+localhost
+
+guiaflat.firebaseapp.com
+
+guiaflat.web.app
+
+Prováveis causas e como resolver:
+
+Cenário A: Você está testando localmente com um IP (Exemplo: 127.0.0.1 ou 192.168...)
+
+Se você está abrindo seu arquivo usando uma extensão como a Live Server do VS Code, ela pode estar abrindo o seu navegador usando o endereço http://127.0.0.1:5500/index.html em vez de localhost. Para o Firebase, 127.0.0.1 é diferente de localhost!
+
+Solução rápida: Altere a URL na barra de endereços do seu navegador para usar localhost (ex: http://localhost:5500/index.html).
+
+Cenário B: Você deseja autorizar um novo domínio (como 127.0.0.1 ou um site publicado)
+
+Se você precisa usar esse domínio específico ou já publicou o seu site em um domínio externo (como Netlify, Vercel ou um domínio próprio):
+
+Acesse o Console do Firebase e abra o projeto GuiaFlat.
+
+No menu lateral esquerdo, vá em Authentication.
+
+Clique na aba Settings (Configurações) no menu superior da página de Authentication.
+
+No menu lateral esquerdo dessa mesma tela, clique em Authorized domains (Domínios autorizados) [1.1].
+
+Clique no botão Add domain (Adicionar domínio) [1.1].
+
+Digite o domínio que você está usando (por exemplo, 127.0.0.1 ou meusite.com) e clique em Add (Adicionar) [1.1].
+
+Nota: Não é necessário incluir http://, https:// ou portas (como :5500) na hora de cadastrar o domínio. Use apenas o nome puro do domínio ou IP.
+
+Uma vez adicionado o domínio correto no console, o erro desaparecerá imediatamente e o login do Google funcionará perfeitamente!

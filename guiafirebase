@@ -1,0 +1,47 @@
+Para acessar o seu Firebase Realtime Database (guiaflat-default-rtdb) diretamente de uma página HTML, você pode usar o SDK JavaScript do Firebase via CDN (usando módulos ES6).
+
+Aqui está um exemplo prático de como estruturar sua página HTML para conectar e interagir com o banco de dados:
+
+1. Estrutura do arquivo index.html
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Conexão com Firebase RTDB</title>
+</head>
+<body>
+    <h1>Firebase Realtime Database</h1>
+    <button id="btnSalvar">Salvar Dados</button>
+
+    <script type="module">
+        // Importa os SDKs necessários da CDN
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // Configurações do seu projeto Firebase
+        // Você pode obter a chave de API (apiKey) e outros dados criando um "Aplicativo Web" no Console do Firebase
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY",
+            authDomain: "guiaflat.firebaseapp.com",
+            databaseURL: "https://guiaflat-default-rtdb.firebaseio.com",
+            projectId: "guiaflat",
+            storageBucket: "guiaflat.appspot.com",
+        };
+
+        // Inicializa o Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Exemplo: Escrever dados ao clicar no botão
+        document.getElementById('btnSalvar').addEventListener('click', () => {
+            set(ref(database, 'usuarios/teste'), {
+                nome: "Desenvolvedor",
+                mensagem: "Conectado com sucesso!"
+            })
+            .then(() => alert("Dados gravados com sucesso!"))
+            .catch((error) => console.error("Erro de permissão ou conexão:", error));
+        });
+    </script>
+</body>
+</html>
