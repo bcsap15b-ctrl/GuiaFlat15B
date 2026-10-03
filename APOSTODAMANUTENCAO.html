@@ -136,12 +136,12 @@
       <!-- Área de Conteúdo Dinâmico -->
       <div id="detail-content" class="p-4 flex-1 min-h-0 overflow-y-auto hide-scrollbar bg-gray-50">
       </div>
-      <div data-firebase-auth-status role="status" aria-live="polite" class="hidden min-h-7 shrink-0 bg-[#002b49] px-3 py-1 text-center text-[9px] text-gray-300">Autenticação Firebase não iniciada</div>
+      <div data-firebase-auth-status role="status" aria-live="polite" class="min-h-7 shrink-0 bg-[#002b49] px-3 py-1 text-center text-[9px] text-gray-300">Autenticação Firebase não iniciada</div>
     </div>
 
     <!-- RODAPÉ DE NAVEGAÇÃO -->
     <footer class="bg-[#002b49] text-white px-6 pt-1.5 pb-2 shrink-0">
-      <div data-firebase-auth-status role="status" aria-live="polite" class="hidden min-h-4 text-center text-[9px] text-gray-300">Autenticação Firebase não iniciada</div>
+      <div data-firebase-auth-status role="status" aria-live="polite" class="min-h-4 text-center text-[9px] text-gray-300">Autenticação Firebase não iniciada</div>
       <nav class="flex justify-between items-center text-[10px]">
         <button onclick="closeScreen()" class="flex flex-col items-center gap-0.5 text-cyan-300">
           <i class="fa-solid fa-house text-sm"></i>
@@ -460,13 +460,8 @@
         status.classList.toggle('text-green-300', state === 'success');
         status.classList.toggle('text-red-300', state === 'error');
         status.classList.toggle('text-gray-300', state === 'pending');
-        status.classList.toggle('hidden', getAdminMode() !== 'SIM');
       });
     }
-
-    document.querySelectorAll('[data-firebase-auth-status]').forEach((status) => {
-      status.classList.toggle('hidden', getAdminMode() !== 'SIM');
-    });
 
     function hasFullFirebaseMenuAccess(user) {
       const authenticatedEmail = user?.email?.trim().toUpperCase();
@@ -1138,14 +1133,14 @@
         content: `
           <div class="space-y-3">
             <p class="text-xs text-gray-700 leading-relaxed bg-white p-3 rounded-xl border border-gray-100">
-              Nosso flat no <strong>{{ANDAR}} {{ECOMGARDEN}}</strong>, está localizado na praia de {{LUGAR1}}, em {{LUGAR2}}, no condomínio {{CONDOMINIO}}.<br><br>
+              Nosso flat no <strong>{{ANDAR}}{{ECOMGARDEN}}</strong>, está localizado na praia de {{LUGAR1}}, em {{LUGAR2}}, no condomínio {{CONDOMINIO}}.<br><br>
               Perfeito para quem busca conforto e praticidade perto da praia.
             </p>
 
             <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-xs text-emerald-900 flex items-center gap-2">
               <i class="fa-solid fa-leaf text-emerald-600 text-lg"></i>
               <div>
-                <p class="font-bold capitalize">{{ANDAR}} {{EGARDEN}}</p>
+                <p class="font-bold capitalize">{{ANDAR}}{{EGARDEN}}</p>
                 <p class="text-[10px]">Mais espaço, privacidade e contato com a natureza.</p>
               </div>
             </div>

@@ -241,8 +241,19 @@ Nova tela de inclusão:
 
 
 deixar para o final:
+
+- na tela inicial, ao receber o parâmetro FLAT no querystring, converter o dado recebido em letras minúsculas (lcase).
+- na tela de inclusão, Ao receber os campos "Flat" e "Email Anfitrião" da tela, converter ambos os campos em letras minúsculas (lcase).
+- na tela de exclusão:
+. Ao receber o campo "Flat" da tela, converter  em letras minúsculas (lcase).
+. antes de efetuar a exclusão, verificar se o flat existe, e se não existir exibir a mensagem "Flat não cadastrado!".
+
 Na tela de "Informações do FLAT"
 - Exibir a seguinte mensagem no inferior da tela:
 "OBS.: As informações preenchidas nesta tela serão utilizadas no seu Guia do Hóspede e ficarão disponíveis em um site público na internet.
 Isso significa que os dados informados aqui poderão ser visualizados por qualquer pessoa. Por isso, NÃO informar os dados que NÃO queira tornar públicos."
-- Se der erro na operação com o firebase, exibir logs do erro na tela.
+
+
+
+- Se o parâmetro da querystring ADM for diferente de SIM, não exibir a mensagem "Autenticação Firebase não iniciada" no rodapé.
+

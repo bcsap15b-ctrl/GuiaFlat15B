@@ -136,12 +136,12 @@
       <!-- Área de Conteúdo Dinâmico -->
       <div id="detail-content" class="p-4 flex-1 min-h-0 overflow-y-auto hide-scrollbar bg-gray-50">
       </div>
-      <div data-firebase-auth-status role="status" aria-live="polite" class="hidden min-h-7 shrink-0 bg-[#002b49] px-3 py-1 text-center text-[9px] text-gray-300">Autenticação Firebase não iniciada</div>
+      <div data-firebase-auth-status role="status" aria-live="polite" class="min-h-7 shrink-0 bg-[#002b49] px-3 py-1 text-center text-[9px] text-gray-300">Autenticação Firebase não iniciada</div>
     </div>
 
     <!-- RODAPÉ DE NAVEGAÇÃO -->
     <footer class="bg-[#002b49] text-white px-6 pt-1.5 pb-2 shrink-0">
-      <div data-firebase-auth-status role="status" aria-live="polite" class="hidden min-h-4 text-center text-[9px] text-gray-300">Autenticação Firebase não iniciada</div>
+      <div data-firebase-auth-status role="status" aria-live="polite" class="min-h-4 text-center text-[9px] text-gray-300">Autenticação Firebase não iniciada</div>
       <nav class="flex justify-between items-center text-[10px]">
         <button onclick="closeScreen()" class="flex flex-col items-center gap-0.5 text-cyan-300">
           <i class="fa-solid fa-house text-sm"></i>
@@ -259,9 +259,8 @@
     }
 
     function getRequestedApto() {
-      const query = new URLSearchParams(window.location.search);
-      const apto = (query.get('FLAT') || query.get('APTO'))?.trim().toLowerCase();
-      return apto && /^[a-z0-9-]{1,10}$/.test(apto) ? apto : 'solare15b';
+      const apto = new URLSearchParams(window.location.search).get('APTO')?.trim();
+      return apto && /^[A-Z0-9-]{1,10}$/i.test(apto) ? apto : 'solare15B';
     }
 
     function getAdminMode() {
@@ -341,16 +340,11 @@
 
     async function submitFlatDeletion(event) {
       event.preventDefault();
-      const flat = document.getElementById('delete-flat-code').value.trim().toLowerCase();
+      const flat = document.getElementById('delete-flat-code').value.trim();
       try {
-        if (!/^[a-z0-9-]{1,10}$/.test(flat)) throw new Error('Informe um código de Flat válido.');
+        if (!/^[A-Za-z0-9-]{1,10}$/.test(flat)) throw new Error('Informe um código de Flat válido.');
         const token = await getFlatAdminToken('Exclusão');
-        const flatUrl = getAdminFirebaseUrl(flat, token);
-        const lookupResponse = await fetch(flatUrl, { cache: 'no-store' });
-        const existingFlat = await readFirebaseResponse(lookupResponse, 'Verificação do cadastro');
-        if (existingFlat === null) throw new Error('Flat não cadastrado!');
-
-        const response = await fetch(flatUrl, { method: 'DELETE' });
+        const response = await fetch(getAdminFirebaseUrl(flat, token), { method: 'DELETE' });
         await readFirebaseResponse(response, 'Exclusão');
         showParameterScreen('Excluir FLAT', '<p role="status" class="rounded-lg border border-green-200 bg-green-50 p-4 text-center text-sm font-semibold text-green-800">Flat excluído com sucesso.</p>');
         window.setTimeout(() => openScreen('mais'), 1300);
@@ -382,10 +376,10 @@
 
     async function submitFlatCreation(event) {
       event.preventDefault();
-      const flat = document.getElementById('new-flat-code').value.trim().toLowerCase();
-      const email = document.getElementById('new-flat-email').value.trim().toLowerCase();
+      const flat = document.getElementById('new-flat-code').value.trim();
+      const email = document.getElementById('new-flat-email').value.trim();
       try {
-        if (!/^[a-z0-9-]{1,10}$/.test(flat)) throw new Error('Informe um código de Flat válido.');
+        if (!/^[A-Za-z0-9-]{1,10}$/.test(flat)) throw new Error('Informe um código de Flat válido.');
         if (!email) throw new Error('Informe o Email Anfitrião.');
         const token = await getFlatAdminToken('Inclusão');
         const url = getAdminFirebaseUrl(flat, token);
@@ -460,13 +454,8 @@
         status.classList.toggle('text-green-300', state === 'success');
         status.classList.toggle('text-red-300', state === 'error');
         status.classList.toggle('text-gray-300', state === 'pending');
-        status.classList.toggle('hidden', getAdminMode() !== 'SIM');
       });
     }
-
-    document.querySelectorAll('[data-firebase-auth-status]').forEach((status) => {
-      status.classList.toggle('hidden', getAdminMode() !== 'SIM');
-    });
 
     function hasFullFirebaseMenuAccess(user) {
       const authenticatedEmail = user?.email?.trim().toUpperCase();
@@ -705,7 +694,6 @@
           <p id="parameter-save-status" role="status" class="text-sm text-red-600"></p>
           <button type="submit" class="w-full rounded-lg bg-[#002b49] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#03446b]">Salvar</button>
         </form>
-        <p class="mt-5 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs leading-relaxed text-amber-900">OBS.: As informações preenchidas nesta tela serão utilizadas no seu Guia do Hóspede e ficarão disponíveis em um site público na internet. Isso significa que os dados informados aqui poderão ser visualizados por qualquer pessoa. Por isso, NÃO informar os dados que NÃO queira tornar públicos.</p>
       `);
     }
 
@@ -1138,14 +1126,14 @@
         content: `
           <div class="space-y-3">
             <p class="text-xs text-gray-700 leading-relaxed bg-white p-3 rounded-xl border border-gray-100">
-              Nosso flat no <strong>{{ANDAR}} {{ECOMGARDEN}}</strong>, está localizado na praia de {{LUGAR1}}, em {{LUGAR2}}, no condomínio {{CONDOMINIO}}.<br><br>
+              Nosso flat no <strong>{{ANDAR}}{{ECOMGARDEN}}</strong>, está localizado na praia de {{LUGAR1}}, em {{LUGAR2}}, no condomínio {{CONDOMINIO}}.<br><br>
               Perfeito para quem busca conforto e praticidade perto da praia.
             </p>
 
             <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-xs text-emerald-900 flex items-center gap-2">
               <i class="fa-solid fa-leaf text-emerald-600 text-lg"></i>
               <div>
-                <p class="font-bold capitalize">{{ANDAR}} {{EGARDEN}}</p>
+                <p class="font-bold capitalize">{{ANDAR}}{{EGARDEN}}</p>
                 <p class="text-[10px]">Mais espaço, privacidade e contato com a natureza.</p>
               </div>
             </div>
